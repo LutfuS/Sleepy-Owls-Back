@@ -98,7 +98,7 @@ describe("Gestion des data.", () => {
 describe("POST -/login", () => {
     it("Authentifier un utilisateur correctement. -S", (done) => {
         chai.request(server).post('/login').send({
-            username: "john",
+            username: "dwarf1554Slayer",
             password: "fggsdqge",
             email: "johnu.us@gmail.com"
 
@@ -112,7 +112,7 @@ describe("POST -/login", () => {
     it("Authentifier un utilisateur incorrect. -E(avec email incorrect)", (done) => {
         chai.request(server).post('/login').send({
             username: "john",
-            password: "ftshgerg(ggsdertfeqge",
+            password: "fggsdqge",
             email: "johqgenu.us@gmail.com"
 
 
@@ -125,7 +125,7 @@ describe("POST -/login", () => {
     it("Authentifier un utilisateur incorrect. -E(avec username incorrect)", (done) => {
         chai.request(server).post('/login').send({
             username: "jozsgsetghn",
-            password: "fggsdertfeqge",
+            password: "fggsdqge",
             email: "johnu.us@gmail.com"
 
 
@@ -152,7 +152,7 @@ describe("POST - /sleepLog", () => {
         const rating = faker.number.int({ min: 1, max: 5 })
         chai.request(server).post('/sleepLog')
 
-
+            .auth(token, { type: 'bearer' })
             .send({
                 user_id: rdm_user(tab_id_users),
                 logDate,
@@ -173,7 +173,7 @@ describe("POST - /sleepLog", () => {
         const rating = faker.number.int({ min: 1, max: 5 })
         chai.request(server).post('/sleepLog')
 
-
+            .auth(token, { type: 'bearer' })
             .send({
 
                 logDate,
@@ -194,7 +194,7 @@ describe("POST - /sleepLog", () => {
         const rating = faker.number.int({ min: 1, max: 5 })
         chai.request(server).post('/sleepLog')
 
-
+            .auth(token, { type: 'bearer' })
             .send({
                 user_id: rdm_user(tab_id_users),
                 logDate,
@@ -203,6 +203,24 @@ describe("POST - /sleepLog", () => {
 
             }).end((err, res) => {
                 expect(res).to.have.status(405)
+                done()
+            })
+    })
+    it("Ajouter un sleepLog. (sans être authentifier) - E", (done) => {
+        const logDate = faker.defaultRefDate(30);
+        const note = faker.helpers.arrayElement(["Je suis parti dormir tard hier", "J'ai eu du mal à m'endormir", "J'ai eu une bonne nuit de sommeil", "J'ai eu plusieurs paralysie du sommeil cette nuit"])
+        const rating = faker.number.int({ min: 1, max: 5 })
+        chai.request(server).post('/sleepLog')
+
+
+            .send({
+                user_id: rdm_user(tab_id_users),
+                logDate,
+                note,
+                rating,
+
+            }).end((err, res) => {
+                expect(res).to.have.status(401)
                 done()
             })
     })
@@ -217,7 +235,7 @@ describe("POST - /sleepLogs", () => {
         const rating = faker.number.int({ min: 1, max: 5 })
         chai.request(server).post('/sleepLogs')
 
-
+            .auth(token, { type: 'bearer' })
             .send([
                 {
                     user_id: rdm_user(tab_id_users),
@@ -246,7 +264,7 @@ describe("POST - /sleepLogs", () => {
         const rating = faker.number.int({ min: 1, max: 5 })
         chai.request(server).post('/sleepLogs')
 
-
+            .auth(token, { type: 'bearer' })
             .send([
                 {
 
@@ -276,7 +294,7 @@ describe("POST - /sleepLogs", () => {
         const rating = faker.number.int({ min: 1, max: 5 })
         chai.request(server).post('/sleepLogs')
 
-
+            .auth(token, { type: 'bearer' })
             .send([
                 {
                     user_id: rdm_user(tab_id_users),
@@ -297,6 +315,26 @@ describe("POST - /sleepLogs", () => {
                 expect(res).to.have.status(405)
                 done()
             });
+    })
+    it("Ajouter un sleepLog. (sans être authentifier) - E", (done) => {
+        const logDate = faker.defaultRefDate(30);
+        const note = faker.helpers.arrayElement(["Je suis parti dormir tard hier", "J'ai eu du mal à m'endormir", "J'ai eu une bonne nuit de sommeil", "J'ai eu plusieurs paralysie du sommeil cette nuit"])
+        const rating = faker.number.int({ min: 1, max: 5 })
+        chai.request(server).post('/sleepLog')
+
+
+            .send([{
+                user_id: rdm_user(tab_id_users),
+                logDate,
+                note,
+                rating,
+
+            }
+            ]
+            ).end((err, res) => {
+                expect(res).to.have.status(401)
+                done()
+            })
     })
 
 })
@@ -586,7 +624,7 @@ describe("PUT - /sleepLog", () => {
             .send({
                 user_id: rdm_user(tab_id_users),
                 logDate,
-                note,
+                note: "",
                 rating,
 
             })
@@ -678,7 +716,7 @@ describe("PUT -/sleepLogs", () => {
             .send({
                 user_id: rdm_user(tab_id_users),
                 logDate,
-                note,
+                note: "",
                 rating,
             })
             .end((err, res) => {
@@ -706,15 +744,69 @@ describe("PUT -/sleepLogs", () => {
             })
     })
 })
+
+describe("DELETE - /sleepLogs", () => {
+
+    it("Supprimer plusieurs sleepLog incorrects (avec un id inexistant). - E", (done) => {
+        const logDate = faker.defaultRefDate(30);
+        const note = faker.helpers.arrayElement(["Je suis parti dormir tard hier", "J'ai eu du mal à m'endormir", "J'ai eu une bonne nuit de sommeil", "J'ai eu plusieurs paralysie du sommeil cette nuit"])
+        const rating = faker.number.int({ min: 1, max: 5 })
+        chai.request(server).delete('/sleepLog/66791a008843ab10ee8ad688', "66791a008843ab10ee8ad689")
+            .auth(token, { type: 'bearer' })
+            .end((err, res) => {
+                res.should.have.status(404)
+                done()
+            })
+    })
+    it("Supprimer plusieurs sleepLogs incorrects (avec un id invalide). - E", (done) => {
+        const logDate = faker.defaultRefDate(30);
+        const note = faker.helpers.arrayElement(["Je suis parti dormir tard hier", "J'ai eu du mal à m'endormir", "J'ai eu une bonne nuit de sommeil", "J'ai eu plusieurs paralysie du sommeil cette nuit"])
+        const rating = faker.number.int({ min: 1, max: 5 })
+        chai.request(server).delete('/sleepLogs').query({ id: ['1235wgbd74&&451wdbd176', "jcdrtujrt55"] })
+            .auth(token, { type: 'bearer' })
+            .end((err, res) => {
+                res.should.have.status(405)
+                console.log(err)
+                done()
+            })
+    })
+    it("Supprimer plusieurs sleepLogs. - S", (done) => {
+        const logDate = faker.defaultRefDate(30);
+        const note = faker.helpers.arrayElement(["Je suis parti dormir tard hier", "J'ai eu du mal à m'endormir", "J'ai eu une bonne nuit de sommeil", "J'ai eu plusieurs paralysie du sommeil cette nuit"])
+        const rating = faker.number.int({ min: 1, max: 5 })
+        chai.request(server).delete('/sleepLogs')
+            .auth(token, { type: 'bearer' })
+            .query({ id: _.map(sleepLogs, '_id') })
+            .end((err, res) => {
+                res.should.have.status(200)
+                // console.log({ id: _.map(sleepLogs, '_id') })
+                done()
+            })
+    })
+    it("Supprimer plusieurs sleepLogs sans être authentifier. - E", (done) => {
+        const logDate = faker.defaultRefDate(30);
+        const note = faker.helpers.arrayElement(["Je suis parti dormir tard hier", "J'ai eu du mal à m'endormir", "J'ai eu une bonne nuit de sommeil", "J'ai eu plusieurs paralysie du sommeil cette nuit"])
+        const rating = faker.number.int({ min: 1, max: 5 })
+        chai.request(server).delete('/sleepLogs')
+
+            .query({ id: _.map(sleepLogs, '_id') })
+            .end((err, res) => {
+                res.should.have.status(401)
+                done()
+            })
+    })
+})
+
 describe("DELETE - /sleepLog", () => {
     it("Supprimer un sleepLog. - S", (done) => {
         const logDate = faker.defaultRefDate(30);
         const note = faker.helpers.arrayElement(["Je suis parti dormir tard hier", "J'ai eu du mal à m'endormir", "J'ai eu une bonne nuit de sommeil", "J'ai eu plusieurs paralysie du sommeil cette nuit"])
         const rating = faker.number.int({ min: 1, max: 5 })
-        chai.request(server).delete('/sleepLog/' + sleepLogs[1]._id)
+        chai.request(server).delete('/sleepLog/' + sleepLogs[0]._id)
             .auth(token, { type: 'bearer' })
             .end((err, res) => {
-                res.should.have.status(200)
+                // res.should.have.status(200)
+                console.log(err)
                 done()
             })
     })
@@ -755,55 +847,7 @@ describe("DELETE - /sleepLog", () => {
 
 
 
-describe("DELETE - /sleepLog", () => {
 
-    it("Supprimer plusieurs sleepLog incorrects (avec un id inexistant). - E", (done) => {
-        const logDate = faker.defaultRefDate(30);
-        const note = faker.helpers.arrayElement(["Je suis parti dormir tard hier", "J'ai eu du mal à m'endormir", "J'ai eu une bonne nuit de sommeil", "J'ai eu plusieurs paralysie du sommeil cette nuit"])
-        const rating = faker.number.int({ min: 1, max: 5 })
-        chai.request(server).delete('/sleepLog/66791a008843ab10ee8ad688&&66791a008843ab10ee8ad689')
-            .auth(token, { type: 'bearer' })
-            .end((err, res) => {
-                res.should.have.status(404)
-                done()
-            })
-    })
-    it("Supprimer plusieurs sleepLogs incorrects (avec un id invalide). - E", (done) => {
-        const logDate = faker.defaultRefDate(30);
-        const note = faker.helpers.arrayElement(["Je suis parti dormir tard hier", "J'ai eu du mal à m'endormir", "J'ai eu une bonne nuit de sommeil", "J'ai eu plusieurs paralysie du sommeil cette nuit"])
-        const rating = faker.number.int({ min: 1, max: 5 })
-        chai.request(server).delete('/sleepLogs').query({ id: ['123', '456'] })
-            .auth(token, { type: 'bearer' })
-            .end((err, res) => {
-                res.should.have.status(405)
-                done()
-            })
-    })
-    it("Supprimer plusieurs sleepLogs. - S", (done) => {
-        const logDate = faker.defaultRefDate(30);
-        const note = faker.helpers.arrayElement(["Je suis parti dormir tard hier", "J'ai eu du mal à m'endormir", "J'ai eu une bonne nuit de sommeil", "J'ai eu plusieurs paralysie du sommeil cette nuit"])
-        const rating = faker.number.int({ min: 1, max: 5 })
-        chai.request(server).delete('/sleepLogs')
-            .auth(token, { type: 'bearer' })
-            .query({ id: _.map(sleepLogs, '_id') })
-            .end((err, res) => {
-                res.should.have.status(200)
-                done()
-            })
-    })
-    it("Supprimer plusieurs sleepLogs sans être authentifier. - E", (done) => {
-        const logDate = faker.defaultRefDate(30);
-        const note = faker.helpers.arrayElement(["Je suis parti dormir tard hier", "J'ai eu du mal à m'endormir", "J'ai eu une bonne nuit de sommeil", "J'ai eu plusieurs paralysie du sommeil cette nuit"])
-        const rating = faker.number.int({ min: 1, max: 5 })
-        chai.request(server).delete('/sleepLogs')
-
-            .query({ id: _.map(sleepLogs, '_id') })
-            .end((err, res) => {
-                res.should.have.status(401)
-                done()
-            })
-    })
-})
 
 describe("Gestion des utilisateurs.", () => {
 

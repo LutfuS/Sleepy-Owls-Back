@@ -102,9 +102,9 @@ app.get("/record", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt
 // Création des endpoint pour les sleepLog
 
 
-app.post("/sleepLog", DataBaseMiddleWare.CheckConnexion, SleepLogController.createOneSleepLog);
+app.post("/sleepLog", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), SleepLogController.createOneSleepLog);
 
-app.post("/sleepLogs", DataBaseMiddleWare.CheckConnexion, SleepLogController.createManySleepLogs);
+app.post("/sleepLogs", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), SleepLogController.createManySleepLogs);
 
 app.get("/sleepLog/:id", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), SleepLogController.findOneSleepLogById);
 
@@ -118,7 +118,7 @@ app.put("/sleepLogs", DataBaseMiddleWare.CheckConnexion, passport.authenticate('
 
 app.delete("/sleepLog/:id", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), SleepLogController.deleteOneSleepLog);
 
-app.delete("/sleepLog", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), SleepLogController.deleteManySleepLogs);
+app.delete("/sleepLogs", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), SleepLogController.deleteManySleepLogs);
 
 app.get("/sleepLog", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), SleepLogController.findOneSleepLog)
 

@@ -40,12 +40,10 @@ var RecordSchema = mongoose.Schema({
         default: new Date()
 
     },
-    token: [{
-        authToken: {
-            type: String,
-            required: true
-        }
-    }],
+    token: {
+        type: String,
+        required: false
+    }
 
 },
 

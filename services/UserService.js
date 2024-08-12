@@ -18,7 +18,11 @@ module.exports.loginUser = async function (username, password, options, callback
         else {
             if (bcrypt.compareSync(password, value.password)) {
                 var token = TokenUtils.createToken({ _id: value._id }, null)
-                callback(null, { ...value, token: token })
+                console.log(token, value)
+                module.exports.updateOneUser(value._id, { token: token }, null, (err, v) => {
+
+                    callback(null, { ...value, token: token })
+                })
             }
             else {
                 callback({ msg: "La comparaison des mots de passe sont fausses", type_error: "no_comparaison" })

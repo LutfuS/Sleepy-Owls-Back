@@ -193,7 +193,7 @@ module.exports.deleteManyUsers = function (req, res) {
         arg = [arg];
 
     UserService.deleteManyUsers(req.query.id, null, function (err, value) {
-        console.log(err)
+        // console.log(err)
         if (err && err.type_error === "no-found") {
             res.statusCode = 404;
             res.send(err);

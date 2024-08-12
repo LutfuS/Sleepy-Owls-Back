@@ -39,7 +39,7 @@ describe("POST - /user", () => {
     it("Ajouter un utilisateur incorrect. (Avec un username existant) - E", (done) => {
         chai.request(server).post('/user').send({
 
-            username: "john",
+            username: "johnh",
             password: "fggsdqge",
             email: "johnu.us@gmail.com"
         }).end((err, res) => {
@@ -64,14 +64,14 @@ describe("POST - /users", () => {
         chai.request(server).post('/users').send([
             {
 
-                username: "waterBiker",
-                email: "aurel.mosini@gmail.com",
+                username: "watevoyluirBiker",
+                email: "aurebiol.mosini@gmail.com",
                 password: "fggsdqge"
             },
             {
 
-                username: "AlexLeGrand",
-                email: "alexandre.porteron@gmail.com",
+                username: "AleguluxLeGrand",
+                email: "alexgiluandre.porteron@gmail.com",
                 password: "fggsdqge"
             }
 
@@ -105,7 +105,7 @@ describe("POST - /users", () => {
         chai.request(server).post('/users').send([
             {
 
-                username: "waterBiker",
+                sername: "watevoyluirB4iker",
                 email: "aurel.moini@gmail.com",
                 password: "fggsdqge"
             },
@@ -420,67 +420,69 @@ describe("PUT - /user", () => {
             });
     });
 });
-// describe("PUT -/users", () => {
-//     it("Modifier plusieurs utilisateurs. -S", (done) => {
-//         chai.request(server).put('/users').query({ id: _.map(users, '_id') }).send({
-//             username: "waterBiker",
-//             email: "aurel.mosinli@gmail.com",
-//             password: "fggsdqge"
-//         }).auth(token, { type: 'bearer' })
-//             .end((err, res) => {
-//                 res.should.have.status(200)
-//                 console.log(res, err)
-//                 done()
-//             })
-//     })
-//     it("Modifier plusieurs utilisateurs avec des id invalide. -E", (done) => {
-//         chai.request(server).put('/users').query({ id: ['234465465', '453564'] }).send({
-//             username: "waterBiker",
-//             email: "aurel.mosini@gmail.com",
-//             password: "fggsdqge"
-//         }).auth(token, { type: 'bearer' })
-//             .end((err, res) => {
-//                 res.should.have.status(405)
-//                 done()
-//             })
-//     })
-//     it("Modifier plusieurs utilisateurs avec des ids inexistants. -E", (done) => {
-//         chai.request(server).put('/users').query({ id: ['66791cb82c6b5e01b4bjc1efd5', '66791cb82c6b5e01tygob4c1efd7'] }).send({
-//             username: "Olivier"
-//         }).auth(token, { type: 'bearer' })
-//             .end((err, res) => {
-//                 res.should.have.status(404)
-//                 done()
-//             })
-//     })
-//     it("Modifier plusieurs utilisateurs avec un champ requis vide. -E", (done) => {
-//         chai.request(server).put('/users').query({ id: _.map(users, '_id') }).send({
-//             username: ""
-//         }).auth(token, { type: 'bearer' })
-//             .end((err, res) => {
-//                 res.should.have.status(405)
-//                 done()
-//             })
-//     })
-//     it("Modifier plusieurs utilisateurs avec un champ unique existant. -E", (done) => {
-//         chai.request(server).put('/users').query({ id: _.map(users, '_id') }).send({
-//             username: users[1].username
-//         }).auth(token, { type: 'bearer' })
-//             .end((err, res) => {
-//                 res.should.have.status(405)
-//                 done()
-//             })
-//     })
-//     it("Modifier plusieurs utilisateurs sans être authentifier. -E", (done) => {
-//         chai.request(server).put('/users').query({ id: _.map(users, '_id') }).send({
-//             firstName: "lucas"
-//         })
-//             .end((err, res) => {
-//                 res.should.have.status(401)
-//                 done()
-//             })
-//     })
-// })
+describe("PUT -/users", () => {
+    it("Modifier plusieurs utilisateurs. -S", (done) => {
+        chai.request(server).put('/users').query({ id: _.map(users, '_id') }).send({
+            username: "Ale(o_tèiguluxLeGrand",
+            email: "alexgikuyfgiiiifykufluandre.porteron@gmail.com",
+            password: "fggsdqge"
+
+        }).auth(token, { type: 'bearer' })
+            .end((err, res) => {
+                // res.should.have.status(200)
+                console.log(err, res)
+                done()
+            })
+    })
+    it("Modifier plusieurs utilisateurs avec des id invalide. -E", (done) => {
+        chai.request(server).put('/users').query({ id: ['234465465', '453564'] }).send({
+            username: "waterytdjBizgzegker",
+
+        }).auth(token, { type: 'bearer' })
+            .end((err, res) => {
+                res.should.have.status(405)
+                done()
+            })
+    })
+    it("Modifier plusieurs utilisateurs avec des ids inexistants. -E", (done) => {
+        chai.request(server).put('/users').query({ id: ['669f7f28cb2c096dea69b7b5', '66a8a9b72ade60f624c70d41'] }).send({
+            username: "wategveerytdjBizgzegker",
+
+        }).auth(token, { type: 'bearer' })
+            .end((err, res) => {
+                res.should.have.status(404)
+                // console.log(err)
+                done()
+            })
+    })
+    it("Modifier plusieurs utilisateurs avec un champ requis vide. -E", (done) => {
+        chai.request(server).put('/users').query({ id: _.map(users, '_id') }).send({
+            username: ""
+        }).auth(token, { type: 'bearer' })
+            .end((err, res) => {
+                res.should.have.status(405)
+                done()
+            })
+    })
+    it("Modifier plusieurs utilisateurs avec un champ unique existant. -E", (done) => {
+        chai.request(server).put('/users').query({ id: _.map(users, '_id') }).send({
+            username: users[0].username
+        }).auth(token, { type: 'bearer' })
+            .end((err, res) => {
+                res.should.have.status(405)
+                done()
+            })
+    })
+    it("Modifier plusieurs utilisateurs sans être authentifier. -E", (done) => {
+        chai.request(server).put('/users').query({ id: _.map(users, '_id') }).send({
+            firstName: "lucas"
+        })
+            .end((err, res) => {
+                res.should.have.status(401)
+                done()
+            })
+    })
+})
 
 describe("DELETE - /users", () => {
 

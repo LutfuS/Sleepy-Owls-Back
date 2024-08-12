@@ -20,12 +20,11 @@ var SleepLogsSchema = mongoose.Schema({
         min: 1,
         max: 5,
         required: true
-    }, token: [{
-        authToken: {
-            type: String,
-            required: true
-        }
-    }],
+    },
+    token: {
+        type: String,
+        required: false
+    }
 
 
 

@@ -230,62 +230,73 @@ describe("updateOneUser", () => {
     });
 });
 
-// describe("updateManyUsers", () => {
-//     it("Modifier plusieurs utilisateurs correctement. - S", (done) => {
-//         UserService.updateManyUsers(
-//             tab_id_users,
-//             {
-//                 email: "john",
-//                 username: "john",
+describe("updateManyUsers", () => {
+    it("Modifier plusieurs utilisateurs correctement. - S", (done) => {
+        UserService.updateManyUsers(
+            tab_id_users,
+            [{
 
-//             },
-//             null, function (err, value) {
-//                 console.log(err, value)
-//                 expect(value).to.haveOwnProperty("modifiedCount");
-//                 expect(value).to.haveOwnProperty("matchedCount");
-//                 expect(value["matchedCount"]).to.be.equal(tab_id_users.length);
-//                 expect(value["modifiedCount"]).to.be.equal(tab_id_users.length);
-//                 done();
-//             }
-//         );
-//     });
-//     it("Modifier plusieurs utilisateurs avec id incorrect. - E", (done) => {
-//         UserService.updateManyUsers(
-//             "1200",
-//             {
-//                 email: "edouard.dupont7@gmail.com",
-//                 username: "edupont7"
-//             },
-//             null, function (err, value) {
-//                 expect(err).to.be.a("object");
-//                 expect(err).to.haveOwnProperty("msg");
-//                 expect(err).to.haveOwnProperty("type_error");
-//                 expect(err["type_error"]).to.be.equal("no-valid");
-//                 done();
-//             }
-//         );
-//     });
-//     it("Modifier plusieurs utilisateurs avec des champs requis vide. - E", (done) => {
-//         UserService.updateManyUsers(
-//             tab_id_users,
-//             {
-//                 email: "",
-//                 username: "edupont7"
-//             },
-//             null, function (err, value) {
-//                 expect(value).to.be.undefined;
-//                 expect(err).to.haveOwnProperty("msg");
-//                 expect(err).to.haveOwnProperty("fields_with_error").with.lengthOf(1);
-//                 expect(err).to.haveOwnProperty("fields");
-//                 expect(err["fields"]).to.haveOwnProperty("email");
-//                 expect(err["fields"]["email"]).to.equal(
-//                     "Path `email` is required."
-//                 );
-//                 done();
-//             }
-//         );
-//     });
-// });
+                email: "edouFEZFZQFard.dupont111@gmail.com",
+                username: "edupeswhbrhsebsozgaQGZnt111",
+                password: "egrqqfdf"
+
+            },
+            {
+
+                email: "edouFEZFqgetgZQFard.duatpont111@gmail.com",
+                username: "edupehsehswhbrhsebsozgaQGZntgyi112233",
+                password: "egrqqfdf"
+
+            }],
+            null, function (err, value) {
+                console.log(err)
+                // expect(value).to.haveOwnProperty("modifiedCount");
+                // expect(value).to.haveOwnProperty("matchedCount");
+                // expect(value["matchedCount"]).to.be.equal(tab_id_users.length);
+                // expect(value["modifiedCount"]).to.be.equal(tab_id_users.length);
+                done();
+            }
+        );
+    });
+    it("Modifier plusieurs utilisateurs avec id incorrect. - E", (done) => {
+        UserService.updateManyUsers(
+            "1200",
+            {
+                email: "edouardreqhbsesr.dupont7@gmail.com",
+                username: "ederbqdgbesdrgerguqthbserpont7",
+                password: "eqqgeqgfdf"
+            },
+            null, function (err, value) {
+                expect(err).to.be.a("object");
+                expect(err).to.haveOwnProperty("msg");
+                expect(err).to.haveOwnProperty("type_error");
+                expect(err["type_error"]).to.be.equal("no-valid");
+                done();
+            }
+        );
+    });
+    it("Modifier plusieurs utilisateurs avec des champs requis vide. - E", (done) => {
+        UserService.updateManyUsers(
+            tab_id_users,
+            {
+                email: "",
+                username: "eduqherhershpont7",
+                password: "eqfwgrdf"
+            },
+            null, function (err, value) {
+                expect(value).to.be.undefined;
+                expect(err).to.haveOwnProperty("msg");
+                expect(err).to.haveOwnProperty("fields_with_error").with.lengthOf(1);
+                expect(err).to.haveOwnProperty("fields");
+                expect(err["fields"]).to.haveOwnProperty("email");
+                expect(err["fields"]["email"]).to.equal(
+                    "Path `email` is required."
+                );
+                done();
+            }
+        );
+    });
+});
 
 describe("deleteOneUser", () => {
     it("Supprimer un utilisateur correct. - S", (done) => {

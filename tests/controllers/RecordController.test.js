@@ -70,7 +70,7 @@ function rdm_user(tab) {
 describe("POST -/login", () => {
     it("Authentifier un utilisateur correctement. -S", (done) => {
         chai.request(server).post('/login').send({
-            username: "john",
+            username: "dwarf1554Slayer",
             password: "fggsdqge",
             email: "johnu.us@gmail.com"
 
@@ -78,7 +78,7 @@ describe("POST -/login", () => {
             res.should.have.status(200)
 
             token = res.body.token
-            // console.log(res, res)
+            // console.log(res.body.token)
             done()
         })
     })
@@ -120,7 +120,7 @@ describe("Gestion des data.", () => {
     const genData = sleepData;
     it("Création de data", (done) => {
         RecordService.createManyRecords(sleepData, null, function (err, value) {
-            console.log(err, value);
+            //    console.log(err, value);
             done();
         });
     });
@@ -317,6 +317,7 @@ describe("GET -/record", () => {
             .query({ fields: ["user_id"], value: records[0].user_id })
 
             .end((err, res) => {
+                console.log(token)
                 res.should.have.status(200)
                 done()
             })
