@@ -1,14 +1,14 @@
-const NotificationService = require('../../services/NotificationService')
+const RappelService = require('../../services/RappelService')
 const UserService = require('../../services/UserService')
 const SleepLogService = require('../../services/SleepLogService')
 const chai = require('chai');
 const { faker } = require('@faker-js/faker');
 let expect = chai.expect;
 const _ = require('lodash')
-var id_notification_valid = ""
-var tab_id_notifications = []
+var id_rappel_valid = ""
+var tab_id_rappels = []
 var tab_id_users = []
-var notifications = []
+var rappels = []
 var tab_id_fictifData = []
 const sleepDuration = faker.number.int({ min: 4, max: 15 }) * 3600000;
 const sleepStart = faker.defaultRefDate(30);
@@ -140,50 +140,52 @@ function rdm_user(tab) {
     return rdm_id
 }
 
-describe("CreateOneNotification", () => {
-    const message = faker.helpers.arrayElement(["Le récapitulatif de votre nuit est disponible", "Votre récapitulatif de la semaine est disponible"])
-    const statut = faker.helpers.arrayElement(["en attente", "completer"])
-    const notifType = faker.helpers.arrayElement(["sms", "push"])
-    it("Notification correct. - S", (done) => {
+describe("CreateOneRappel", () => {
 
-        var notification = {
+    it("Rappel correct. - S", (done) => {
+
+        var rappel = {
 
             user_id: rdm_user(tab_id_users),
-            message,
-            notifType,
-            statut,
-            created_at: faker.defaultRefDate(30),
-            lu: false
+            titre: "Rappel",
+            description: "Il est l'heure de vous lever",
+            date: faker.defaultRefDate(30),
+            frequence: faker.helpers.arrayElement([5, 10, 15]),
+            statut: faker.helpers.arrayElement(["en attente", "completer"]),
+            notifType: faker.helpers.arrayElement(["sms", "push"])
+
+
 
         }
 
-        NotificationService.createOneNotification(notification, null, function (err, value) {
+        RappelService.createOneRappel(rappel, null, function (err, value) {
 
             expect(value).to.be.a('object');
             expect(value).to.haveOwnProperty('_id')
             expect(value).to.haveOwnProperty('user_id')
-            id_notification_valid = value._id
-            notifications.push(value)
+            id_rappel_valid = value._id
+            rappels.push(value)
 
             done()
         })
     })
 
-    it("Notification incorrect. (Sans user_id) - E", (done) => {
-        const message = faker.helpers.arrayElement(["Le récapitulatif de votre nuit est disponible", "Votre récapitulatif de la semaine est disponible"])
-        const statut = faker.helpers.arrayElement(["en attente", "completer"])
-        const notifType = faker.helpers.arrayElement(["sms", "push"])
-        var notification_no_valid = {
+    it("Rappel incorrect. (Sans user_id) - E", (done) => {
+
+        var rappel_no_valid = {
 
 
-            message,
-            notifType,
-            statut,
-            created_at: faker.defaultRefDate(30),
-            lu: false
+
+            titre: "Rappel",
+            description: "Il est l'heure de vous lever",
+            date: faker.defaultRefDate(30),
+            frequence: faker.helpers.arrayElement([5, 10, 15]),
+            statut: faker.helpers.arrayElement(["en attente", "completer"]),
+            notifType: faker.helpers.arrayElement(["sms", "push"])
+
 
         }
-        NotificationService.createOneNotification(notification_no_valid, null, function (err, value) {
+        RappelService.createOneRappel(rappel_no_valid, null, function (err, value) {
             expect(err).to.haveOwnProperty('msg')
             expect(err).to.haveOwnProperty('fields_with_error').with.lengthOf(1)
             expect(err).to.haveOwnProperty('fields')
@@ -194,31 +196,32 @@ describe("CreateOneNotification", () => {
     })
 })
 
-describe("CreateManyNotifications", () => {
-    it("Notifications à ajouter, valide. - S", (done) => {
-        const message = faker.helpers.arrayElement(["Le récapitulatif de votre nuit est disponible", "Votre récapitulatif de la semaine est disponible"])
-        const statut = faker.helpers.arrayElement(["en attente", "completer"])
-        const notifType = faker.helpers.arrayElement(["sms", "push"])
+describe("CreateManyRappels", () => {
+    it("Rappels à ajouter, valide. - S", (done) => {
 
-        var notifications_tab = [{
+        var rappels_tab = [{
 
             user_id: rdm_user(tab_id_users),
-            message,
-            notifType,
-            statut,
-            created_at: faker.defaultRefDate(30),
-            lu: false
+            titre: "Rappel",
+            description: "Il est l'heure de vous lever",
+            date: faker.defaultRefDate(30),
+            frequence: faker.helpers.arrayElement([5, 10, 15]),
+            statut: faker.helpers.arrayElement(["en attente", "completer"]),
+            notifType: faker.helpers.arrayElement(["sms", "push"])
+
 
 
 
         }, {
 
             user_id: rdm_user(tab_id_users),
-            message,
-            notifType,
-            statut,
-            created_at: faker.defaultRefDate(30),
-            lu: false
+            titre: "Rappel",
+            description: "Il est l'heure de vous lever",
+            date: faker.defaultRefDate(30),
+            frequence: faker.helpers.arrayElement([5, 10, 15]),
+            statut: faker.helpers.arrayElement(["en attente", "completer"]),
+            notifType: faker.helpers.arrayElement(["sms", "push"])
+
 
 
 
@@ -228,99 +231,105 @@ describe("CreateManyNotifications", () => {
 
 
             user_id: rdm_user(tab_id_users),
-            message,
-            notifType,
-            statut,
-            created_at: faker.defaultRefDate(30),
-            lu: false
+            titre: "Rappel",
+            description: "Il est l'heure de vous lever",
+            date: faker.defaultRefDate(30),
+            frequence: faker.helpers.arrayElement([5, 10, 15]),
+            statut: faker.helpers.arrayElement(["en attente", "completer"]),
+            notifType: faker.helpers.arrayElement(["sms", "push"])
 
 
 
         }]
 
-        NotificationService.createManyNotifications(notifications_tab, null, function (err, value) {
+        RappelService.createManyRappels(rappels_tab, null, function (err, value) {
             //  console.log(err)
-            tab_id_notifications = _.map(value, '_id')
-            notifications = [...value, ...notifications]
+            tab_id_rappels = _.map(value, '_id')
+            rappels = [...value, ...rappels]
             expect(value).lengthOf(3)
             done()
         })
     })
-    it("Notifications à ajouter, non valide. - E", (done) => {
-        const message = faker.helpers.arrayElement(["Le récapitulatif de votre nuit est disponible", "Votre récapitulatif de la semaine est disponible"])
-        const statut = faker.helpers.arrayElement(["en attente", "completer"])
-        const notifType = faker.helpers.arrayElement(["sms", "push"])
-        var notifications_tab_error = [{
+    it("Rappels à ajouter, non valide. - E", (done) => {
+
+        var rappels_tab_error = [{
 
 
-            message,
-            notifType,
-            statut,
-            created_at: faker.defaultRefDate(30),
-            lu: false
+
+            titre: "Rappel",
+            description: "Il est l'heure de vous lever",
+            date: faker.defaultRefDate(30),
+            frequence: faker.helpers.arrayElement([5, 10, 15]),
+            statut: faker.helpers.arrayElement(["en attente", "completer"]),
+            notifType: faker.helpers.arrayElement(["sms", "push"])
+
 
 
 
         }, {
 
 
-            message,
-            notifType,
-            statut,
-            created_at: faker.defaultRefDate(30),
-            lu: false
+
+            titre: "Rappel",
+            description: "Il est l'heure de vous lever",
+            date: faker.defaultRefDate(30),
+            frequence: faker.helpers.arrayElement([5, 10, 15]),
+            statut: faker.helpers.arrayElement(["en attente", "completer"]),
+            notifType: faker.helpers.arrayElement(["sms", "push"])
+
 
         }]
 
-        NotificationService.createManyNotifications(notifications_tab_error, null, function (err, value) {
+        RappelService.createManyRappels(rappels_tab_error, null, function (err, value) {
             done()
         })
     })
 })
 
-describe("findOneNotification", () => {
-    it("Chercher une notification par les champs selectionnés - S.", (done) => {
+describe("findOneRappel", () => {
+    it("Chercher une rappel par les champs selectionnés - S.", (done) => {
 
-        NotificationService.findOneNotification(["user_id"], notifications[0].user_id, null, function (err, value) {
+        RappelService.findOneRappel(["user_id"], rappels[0].user_id, null, function (err, value) {
 
 
-            expect(value).to.haveOwnProperty('message')
-            expect(value).to.haveOwnProperty('notifType')
-            expect(value).to.haveOwnProperty('statut')
+            expect(value).to.haveOwnProperty('titre')
+            expect(value).to.haveOwnProperty('description')
+            expect(value).to.haveOwnProperty('date')
+            expect(value).to.haveOwnProperty('frequence')
             expect(value).to.haveOwnProperty('user_id')
-            expect(value).to.haveOwnProperty('created_at')
-            expect(value).to.haveOwnProperty('lu'),
+            expect(value).to.haveOwnProperty('statut')
+            expect(value).to.haveOwnProperty('notifType')
 
 
-                done()
+            done()
         })
     })
 
-    it("Chercher une notification avec un champ non autorisés - E.", (done) => {
-        NotificationService.findOneNotification(["description", "price"], notifications[0].user_id, null, function (err, value) {
+    it("Chercher une rappel avec un champ non autorisés - E.", (done) => {
+        RappelService.findOneRappel(["description", "price"], rappels[0].user_id, null, function (err, value) {
             expect(err).to.haveOwnProperty('type_error')
             done()
         })
     })
 
-    it("Chercher une notification sans tableau de champ - E.", (done) => {
-        NotificationService.findOneNotification("message", notifications[0].user_id, null, function (err, value) {
+    it("Chercher une rappel sans tableau de champ - E.", (done) => {
+        RappelService.findOneRappel("titre", rappels[0].user_id, null, function (err, value) {
             expect(err).to.haveOwnProperty('type_error')
             done()
         })
     })
 
-    it("Chercher une notification inexistant - E.", (done) => {
-        NotificationService.findOneNotification(["message"], "notifications[0].userId", null, function (err, value) {
+    it("Chercher une rappel inexistant - E.", (done) => {
+        RappelService.findOneRappel(["message"], "rappels[0].userId", null, function (err, value) {
             expect(err).to.haveOwnProperty('type_error')
             done()
         })
     })
 })
 
-describe("findOneNotificationById", () => {
-    it("Chercher une notification existant correct. - S", (done) => {
-        NotificationService.findOneNotificationById(id_notification_valid, null, function (err, value) {
+describe("findOneRappelById", () => {
+    it("Chercher une rappel existant correct. - S", (done) => {
+        RappelService.findOneRappelById(id_rappel_valid, null, function (err, value) {
             expect(value).to.be.a('object');
             expect(value).to.haveOwnProperty('_id')
             expect(value).to.haveOwnProperty('user_id')
@@ -328,8 +337,8 @@ describe("findOneNotificationById", () => {
 
         })
     })
-    it("Chercher une notification non-existant correct. - E", (done) => {
-        NotificationService.findOneNotificationById("100", null, function (err, value) {
+    it("Chercher une rappel non-existant correct. - E", (done) => {
+        RappelService.findOneRappelById("100", null, function (err, value) {
             expect(err).to.haveOwnProperty('msg')
             expect(err).to.haveOwnProperty('type_error')
             expect(err["type_error"]).to.equal('no-valid')
@@ -338,9 +347,9 @@ describe("findOneNotificationById", () => {
     })
 })
 
-describe("findManyNotifications", () => {
-    it("Retourne 3 notifications sur les 4. - S", (done) => {
-        NotificationService.findManyNotifications(null, 1, 3, null, function (err, value) {
+describe("findManyRappels", () => {
+    it("Retourne 3 rappels sur les 4. - S", (done) => {
+        RappelService.findManyRappels(null, 1, 3, null, function (err, value) {
             // console.log(err, value)
             expect(value).to.haveOwnProperty("count")
             expect(value).to.haveOwnProperty("results")
@@ -351,7 +360,7 @@ describe("findManyNotifications", () => {
         })
     })
     it("Faire une recherche avec 0 resultats correspondant. - E", (done) => {
-        NotificationService.findManyNotifications("Couteau", 1, 3, null, function (err, value) {
+        RappelService.findManyRappels("Couteau", 1, 3, null, function (err, value) {
             // console.log(err, value)
             expect(value).to.haveOwnProperty("count")
             expect(value).to.haveOwnProperty("results")
@@ -362,7 +371,7 @@ describe("findManyNotifications", () => {
         })
     })
     it("Envoie chaine de caractere sur page. - E", (done) => {
-        NotificationService.findManyNotifications(null, "user_id", 3, null, function (err, value) {
+        RappelService.findManyRappels(null, "user_id", 3, null, function (err, value) {
             expect(err).to.haveOwnProperty("type_error")
             expect(err["type_error"]).to.be.equal("no-valid")
             expect(value).to.undefined
@@ -371,9 +380,9 @@ describe("findManyNotifications", () => {
     })
 })
 
-describe("findManyNotificationsById", () => {
-    it("Chercher des notifications existant correct. - S", (done) => {
-        NotificationService.findManyNotificationsById(tab_id_notifications, null, function (err, value) {
+describe("findManyRappelsById", () => {
+    it("Chercher des rappels existant correct. - S", (done) => {
+        RappelService.findManyRappelsById(tab_id_rappels, null, function (err, value) {
             expect(value).lengthOf(3)
             done()
 
@@ -382,21 +391,21 @@ describe("findManyNotificationsById", () => {
 })
 
 
-describe("updateOneNotification", () => {
-    it("Modifier une notification correct. - S", (done) => {
-        NotificationService.updateOneNotification(id_notification_valid, { message: "Le récapitulatif de cette nuit est disponible", lu: true }, null, function (err, value) {
+describe("updateOneRappel", () => {
+    it("Modifier une rappel correct. - S", (done) => {
+        RappelService.updateOneRappel(id_rappel_valid, { description: "Il est l'heure de vous lever", titre: "Rappels" }, null, function (err, value) {
             expect(value).to.be.a('object')
             expect(value).to.haveOwnProperty('_id')
-            expect(value).to.haveOwnProperty('message')
-            expect(value).to.haveOwnProperty('lu')
-            expect(value['message']).to.be.equal('Le récapitulatif de cette nuit est disponible')
-            expect(value['lu']).to.be.equal(true)
+            expect(value).to.haveOwnProperty('description')
+            expect(value).to.haveOwnProperty('titre')
+            expect(value['titre']).to.be.equal('Rappels')
+            expect(value['description']).to.be.equal("Il est l'heure de vous lever")
             done()
 
         })
     })
-    it("Modifier une notification avec id incorrect. - E", (done) => {
-        NotificationService.updateOneNotification("1200", { message: "Le récapitulatif de cette nuit est disponible", lu: true }, null, function (err, value) {
+    it("Modifier une rappel avec id incorrect. - E", (done) => {
+        RappelService.updateOneRappel("1200", { description: "Il est l'heure de vous lever", titre: "Rappels" }, null, function (err, value) {
             expect(err).to.be.a('object')
             expect(err).to.haveOwnProperty('msg')
             expect(err).to.haveOwnProperty('type_error')
@@ -404,32 +413,32 @@ describe("updateOneNotification", () => {
             done()
         })
     })
-    it("Modifier une notification avec des champs requis vide. - E", (done) => {
-        NotificationService.updateOneNotification(id_notification_valid, { message: "", lu: true }, null, function (err, value) {
+    it("Modifier une rappel avec des champs requis vide. - E", (done) => {
+        RappelService.updateOneRappel(id_rappel_valid, { description: "", titre: "Rappels" }, null, function (err, value) {
             expect(value).to.be.undefined
             expect(err).to.haveOwnProperty('msg')
             expect(err).to.haveOwnProperty('fields_with_error').with.lengthOf(1)
             expect(err).to.haveOwnProperty('fields')
-            expect(err['fields']).to.haveOwnProperty('message')
-            expect(err['fields']['message']).to.equal('Path `message` is required.')
+            expect(err['fields']).to.haveOwnProperty('description')
+            expect(err['fields']['description']).to.equal('Path `description` is required.')
             done()
         })
     })
 })
 
-describe("updateManyNotifications", () => {
-    it("Modifier plusieurs notifications correctement. - S", (done) => {
-        NotificationService.updateManyNotifications(tab_id_notifications, { message: "Le récapitulatif de cette nuit est disponible", lu: true }, null, function (err, value) {
+describe("updateManyRappels", () => {
+    it("Modifier plusieurs rappels correctement. - S", (done) => {
+        RappelService.updateManyRappels(tab_id_rappels, { description: "Il est l'heure de vous lever", titre: "Rappels" }, null, function (err, value) {
             expect(value).to.haveOwnProperty('modifiedCount')
             expect(value).to.haveOwnProperty('matchedCount')
-            expect(value['matchedCount']).to.be.equal(tab_id_notifications.length)
-            expect(value['modifiedCount']).to.be.equal(tab_id_notifications.length)
+            expect(value['matchedCount']).to.be.equal(tab_id_rappels.length)
+            expect(value['modifiedCount']).to.be.equal(tab_id_rappels.length)
             done()
 
         })
     })
-    it("Modifier plusieurs notifications avec id incorrect. - E", (done) => {
-        NotificationService.updateManyNotifications("1200", { message: "Le récapitulatif de cette nuit est disponible", lu: true }, null, function (err, value) {
+    it("Modifier plusieurs rappels avec id incorrect. - E", (done) => {
+        RappelService.updateManyRappels("1200", { description: "Il est l'heure de vous lever", titre: "Rappels" }, null, function (err, value) {
             expect(err).to.be.a('object')
             expect(err).to.haveOwnProperty('msg')
             expect(err).to.haveOwnProperty('type_error')
@@ -437,31 +446,31 @@ describe("updateManyNotifications", () => {
             done()
         })
     })
-    it("Modifier plusieurs notifications avec des champs requis vide. - E", (done) => {
-        NotificationService.updateManyNotifications(tab_id_notifications, { message: "", lu: true }, null, function (err, value) {
+    it("Modifier plusieurs rappels avec des champs requis vide. - E", (done) => {
+        RappelService.updateManyRappels(tab_id_rappels, { description: "", titre: "Rappels" }, null, function (err, value) {
             expect(value).to.be.undefined
             expect(err).to.haveOwnProperty('msg')
             expect(err).to.haveOwnProperty('fields_with_error').with.lengthOf(1)
             expect(err).to.haveOwnProperty('fields')
-            expect(err['fields']).to.haveOwnProperty('message')
-            expect(err['fields']['message']).to.equal('Path `message` is required.')
+            expect(err['fields']).to.haveOwnProperty('description')
+            expect(err['fields']['description']).to.equal('Path `description` is required.')
             done()
         })
     })
 })
 
-describe("deleteOneNotification", () => {
-    it("Supprimer une notification correct. - S", (done) => {
-        NotificationService.deleteOneNotification(id_notification_valid, null, function (err, value) { //callback
+describe("deleteOneRappel", () => {
+    it("Supprimer une rappel correct. - S", (done) => {
+        RappelService.deleteOneRappel(id_rappel_valid, null, function (err, value) { //callback
             expect(value).to.be.a('object')
             expect(value).to.haveOwnProperty('_id')
-            expect(value).to.haveOwnProperty('message')
-            expect(value).to.haveOwnProperty('statut')
+            expect(value).to.haveOwnProperty('description')
+            expect(value).to.haveOwnProperty('titre')
             done()
         })
     })
-    it("Supprimer une notification avec id incorrect. - E", (done) => {
-        NotificationService.deleteOneNotification("1200", null, function (err, value) {
+    it("Supprimer une rappel avec id incorrect. - E", (done) => {
+        RappelService.deleteOneRappel("1200", null, function (err, value) {
             expect(err).to.be.a('object')
             expect(err).to.haveOwnProperty('msg')
             expect(err).to.haveOwnProperty('type_error')
@@ -470,7 +479,7 @@ describe("deleteOneNotification", () => {
         })
     })
     it("Supprimer un article avec un id inexistant. - E", (done) => {
-        NotificationService.deleteOneNotification("665f00c6f64f76ba59361e9f", null, function (err, value) {
+        RappelService.deleteOneRappel("665f00c6f64f76ba59361e9f", null, function (err, value) {
             expect(err).to.be.a('object')
             expect(err).to.haveOwnProperty('msg')
             expect(err).to.haveOwnProperty('type_error')
@@ -480,18 +489,18 @@ describe("deleteOneNotification", () => {
     })
 })
 
-describe("deleteManyNotifications", () => {
-    it("Supprimer plusieurs notifications correctement. - S", (done) => {
-        NotificationService.deleteManyNotifications(tab_id_notifications, null, function (err, value) {
+describe("deleteManyRappels", () => {
+    it("Supprimer plusieurs rappels correctement. - S", (done) => {
+        RappelService.deleteManyRappels(tab_id_rappels, null, function (err, value) {
             expect(value).to.be.a('object')
             expect(value).to.haveOwnProperty('deletedCount')
-            expect(value['deletedCount']).is.equal(tab_id_notifications.length)
+            expect(value['deletedCount']).is.equal(tab_id_rappels.length)
             done()
 
         })
     })
-    it("Supprimer plusieurs notifications avec id incorrect. - E", (done) => {
-        NotificationService.deleteManyNotifications("1200", null, function (err, value) {
+    it("Supprimer plusieurs rappels avec id incorrect. - E", (done) => {
+        RappelService.deleteManyRappels("1200", null, function (err, value) {
             expect(err).to.be.a('object')
             expect(err).to.haveOwnProperty('msg')
             expect(err).to.haveOwnProperty('type_error')

@@ -11,12 +11,23 @@ describe("UserController", () => {
   require("./controllers/UserController.test");
 });
 
-describe("RecordService", () => {
-  require("./services/RecordService.test")
+
+
+
+describe("NotificationService", () => {
+  require("./services/NotificationService.test")
 })
 
-describe("RecordController", () => {
-  require("./controllers/RecordController.test")
+describe("NotificationController", () => {
+  require("./controllers/NotificationController.test")
+})
+
+describe("RappelService", () => {
+  require("./services/RappelService.test")
+})
+
+describe("RappelController", () => {
+  require("./controllers/RappelController.test")
 })
 
 describe("SleepLogService", () => {
@@ -26,6 +37,11 @@ describe("SleepLogService", () => {
 describe("SleepLogController", () => {
   require("./controllers/SleepLogController.test")
 })
+
+
+
+
+
 describe("API - Mongo", () => {
   it("vider les dbs. -S", () => {
     if (process.env.npm_lifecycle_event == 'test') {

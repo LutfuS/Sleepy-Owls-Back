@@ -17,41 +17,47 @@ var UserSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    personnel: {
+        compte: {
+            type: String,
+            unique: true,
+            required: true,
+        },
+        consentement: {
+            type: Boolean,
+            default: false
+        }
+    },
+    alarme: {
+        vibration: {
+            type: Boolean,
+            default: false
+        }
+    },
+
+    conseil: {
+        image: {
+            type: String,
+            match: /^https?:\/\/.+\.(jpg|jpeg|png|gif)$/
+        },
+        texte: {
+            type: String,
+
+        },
+        statut: {
+            type: Boolean,
+            default: false
+        }
+    },
 
     token: {
         type: String,
         required: false
     }
 
-},
+})
 
-);
+
 
 module.exports = UserSchema;
 
-//     personnel: {
-//         compte: {
-//             type: String,
-//             unique: true,
-//             required: false,
-//         },
-//         consentement: {
-//             type: Boolean,
-//             default: false
-//         }
-//     },
-//     alarme: {
-//         vibration: {
-//             type: Boolean,
-//             default: true
-//         },
-// conseil: {
-//     image: {
-//       type: String,
-//       match: /^https?:\/\/.+\.(jpg|jpeg|png|gif)$/  // Valide une URL d'image
-//     },
-//     texte: {
-//       type: String,
-//
-//     }
-//   }

@@ -1,4 +1,4 @@
-const RecordSchema = require('../schemas/Record')
+const RappelSchema = require('../schemas/Rappel')
 const _ = require('lodash')
 const async = require('async')
 const mongoose = require('mongoose')
@@ -7,16 +7,16 @@ const bcrypt = require('bcrypt')
 const TokenUtils = require('./../utils/token')
 const SALT_WORK8FACTOR = 10
 
-var Record = mongoose.model('Record', RecordSchema)
+var Rappel = mongoose.model('Rappel', RappelSchema)
 
-Record.createIndexes()
+Rappel.createIndexes()
 
 
-module.exports.createOneRecord = async function (record, options, callback) {
+module.exports.createOneRappel = async function (rappel, options, callback) {
 
     try {
-        var new_record = new Record(record);
-        var errors = new_record.validateSync();
+        var new_rappel = new Rappel(rappel);
+        var errors = new_rappel.validateSync();
         if (errors) {
             errors = errors['errors'];
             var text = Object.keys(errors).map((e) => {
@@ -33,8 +33,8 @@ module.exports.createOneRecord = async function (record, options, callback) {
             };
             callback(err);
         } else {
-            await new_record.save();
-            callback(null, new_record.toObject());
+            await new_rappel.save();
+            callback(null, new_rappel.toObject());
         }
     } catch (error) {
         if (error.code === 11000) { // Erreur de duplicité
@@ -52,15 +52,15 @@ module.exports.createOneRecord = async function (record, options, callback) {
     }
 };
 
-module.exports.createManyRecords = async function (records, options, callback) {
+module.exports.createManyRappels = async function (rappels, options, callback) {
     var errors = [];
 
     // Vérifier les erreurs de validation
-    for (var i = 0; i < records.length; i++) {
-        var record = records[i];
+    for (var i = 0; i < rappels.length; i++) {
+        var rappel = rappels[i];
 
-        var new_record = new Record(record);
-        var error = new_record.validateSync();
+        var new_rappel = new Rappel(rappel);
+        var error = new_rappel.validateSync();
         if (error) {
             error = error['errors'];
             var text = Object.keys(error).map((e) => {
@@ -83,7 +83,7 @@ module.exports.createManyRecords = async function (records, options, callback) {
     } else {
         try {
             // Tenter d'insérer les utilisateurs
-            const data = await Record.insertMany(records, { ordered: false });
+            const data = await Rappel.insertMany(rappels, { ordered: false });
             callback(null, data);
         } catch (error) {
             if (error.code === 11000) { // Erreur de duplicité
@@ -106,18 +106,18 @@ module.exports.createManyRecords = async function (records, options, callback) {
     }
 };
 
-module.exports.findOneRecord = function (tab_field, value, options, callback) {
-    var field_unique = ["user_id", "sleepQuality"]
+module.exports.findOneRappel = function (tab_field, value, options, callback) {
+    var field_unique = ["user_id", "titre"]
     if (tab_field && Array.isArray(tab_field) && value && _.filter(tab_field, (e) => { return field_unique.indexOf(e) == -1 }).length == 0) {
         var obj_find = []
         _.forEach(tab_field, (e) => {
             obj_find.push({ [e]: value })
         })
-        Record.findOne({ $or: obj_find }).then((value) => {
+        Rappel.findOne({ $or: obj_find }).then((value) => {
             if (value)
                 callback(null, value.toObject())
             else {
-                callback({ msg: "Record non trouvé.", type_error: "no-found" })
+                callback({ msg: "Rappel non trouvé.", type_error: "no-found" })
             }
         }).catch((err) => {
             callback({ msg: "Error interne mongo", type_error: 'error-mongo' })
@@ -143,7 +143,7 @@ module.exports.findOneRecord = function (tab_field, value, options, callback) {
             callback({ msg: msg, type_error: 'no-valid' })
     }
 }
-module.exports.findManyRecords = function (search, page, limit, options, callback) {
+module.exports.findManyRappels = function (search, page, limit, options, callback) {
     page = !page ? 1 : parseInt(page)
     limit = !limit ? 10 : parseInt(limit)
     var populate = options && options.populate ? ["user_id"] : []
@@ -151,12 +151,12 @@ module.exports.findManyRecords = function (search, page, limit, options, callbac
         callback({ msg: `format de ${typeof page !== "number" ? "page" : "limit"} est incorrect`, type_error: "no-valid" })
     } else {
         var query_mongo = search ? {
-            $or: _.map(["sleepQuality"], (e) => { return { [e]: { $regex: search } } })
+            $or: _.map(["titre"], (e) => { return { [e]: { $regex: search } } })
         } : {}
-        Record.countDocuments(query_mongo).then((value) => {
+        Rappel.countDocuments(query_mongo).then((value) => {
             if (value > 0) {
                 const skip = ((page - 1) * limit)
-                Record.find(query_mongo, null, { skip: skip, limit: limit, populate: populate, lean: true }).then((results) => {
+                Rappel.find(query_mongo, null, { skip: skip, limit: limit, populate: populate, lean: true }).then((results) => {
                     callback(null, {
                         count: value,
                         results: results
@@ -170,15 +170,15 @@ module.exports.findManyRecords = function (search, page, limit, options, callbac
         })
     }
 }
-module.exports.findOneRecordById = function (record_id, options, callback) {
+module.exports.findOneRappelById = function (rappel_id, options, callback) {
     var opts = { populate: options && options.populate ? ["user_id"] : [] }
-    if (record_id && mongoose.isValidObjectId(record_id)) {
-        Record.findById(record_id, null, opts).then((value) => {
+    if (rappel_id && mongoose.isValidObjectId(rappel_id)) {
+        Rappel.findById(rappel_id, null, opts).then((value) => {
             try {
                 if (value) {
                     callback(null, value.toObject());
                 } else {
-                    callback({ msg: "Aucun record trouvé.", type_error: "no-found" });
+                    callback({ msg: "Aucun rappel trouvé.", type_error: "no-found" });
                 }
             }
             catch (e) {
@@ -191,16 +191,16 @@ module.exports.findOneRecordById = function (record_id, options, callback) {
     }
 }
 
-module.exports.findManyRecordsById = function (records_id, options, callback) {
+module.exports.findManyRappelsById = function (rappels_id, options, callback) {
     var opts = { populate: (options && options.populate ? ["user_id"] : []), lean: true }
-    if (records_id && Array.isArray(records_id) && records_id.length > 0 && records_id.filter((e) => { return mongoose.isValidObjectId(e) }).length == records_id.length) {
-        records_id = records_id.map((e) => { return new ObjectId(e) })
-        Record.find({ _id: records_id }, null, opts).then((value) => {
+    if (rappels_id && Array.isArray(rappels_id) && rappels_id.length > 0 && rappels_id.filter((e) => { return mongoose.isValidObjectId(e) }).length == rappels_id.length) {
+        rappels_id = rappels_id.map((e) => { return new ObjectId(e) })
+        Rappel.find({ _id: rappels_id }, null, opts).then((value) => {
             try {
                 if (value && Array.isArray(value) && value.length != 0) {
                     callback(null, value);
                 } else {
-                    callback({ msg: "Aucun record trouvé.", type_error: "no-found" });
+                    callback({ msg: "Aucun rappel trouvé.", type_error: "no-found" });
                 }
             }
             catch (e) {
@@ -209,10 +209,10 @@ module.exports.findManyRecordsById = function (records_id, options, callback) {
             callback({ msg: "Impossible de chercher l'élément.", type_error: "error-mongo" });
         });
     }
-    else if (records_id && Array.isArray(records_id) && records_id.length > 0 && records_id.filter((e) => { return mongoose.isValidObjectId(e) }).length != records_id.length) {
-        callback({ msg: "Tableau non conforme plusieurs éléments ne sont pas des ObjectId.", type_error: 'no-valid', fields: records_id.filter((e) => { return !mongoose.isValidObjectId(e) }) });
+    else if (rappels_id && Array.isArray(rappels_id) && rappels_id.length > 0 && rappels_id.filter((e) => { return mongoose.isValidObjectId(e) }).length != rappels_id.length) {
+        callback({ msg: "Tableau non conforme plusieurs éléments ne sont pas des ObjectId.", type_error: 'no-valid', fields: rappels_id.filter((e) => { return !mongoose.isValidObjectId(e) }) });
     }
-    else if (records_id && !Array.isArray(records_id)) {
+    else if (rappels_id && !Array.isArray(rappels_id)) {
         callback({ msg: "L'argement n'est pas un tableau.", type_error: 'no-valid' });
 
     }
@@ -221,16 +221,16 @@ module.exports.findManyRecordsById = function (records_id, options, callback) {
     }
 }
 
-module.exports.findManyRecordsById = function (records_id, options, callback) {
+module.exports.findManyRappelsById = function (rappels_id, options, callback) {
     var opts = { populate: (options && options.populate ? ["user_id"] : []), lean: true }
-    if (records_id && Array.isArray(records_id) && records_id.length > 0 && records_id.filter((e) => { return mongoose.isValidObjectId(e) }).length == records_id.length) {
-        records_id = records_id.map((e) => { return new ObjectId(e) })
-        Record.find({ _id: records_id }, null, opts).then((value) => {
+    if (rappels_id && Array.isArray(rappels_id) && rappels_id.length > 0 && rappels_id.filter((e) => { return mongoose.isValidObjectId(e) }).length == rappels_id.length) {
+        rappels_id = rappels_id.map((e) => { return new ObjectId(e) })
+        Rappel.find({ _id: rappels_id }, null, opts).then((value) => {
             try {
                 if (value && Array.isArray(value) && value.length != 0) {
                     callback(null, value);
                 } else {
-                    callback({ msg: "Aucun record trouvé.", type_error: "no-found" });
+                    callback({ msg: "Aucun rappel trouvé.", type_error: "no-found" });
                 }
             }
             catch (e) {
@@ -239,10 +239,10 @@ module.exports.findManyRecordsById = function (records_id, options, callback) {
             callback({ msg: "Impossible de chercher l'élément.", type_error: "error-mongo" });
         });
     }
-    else if (records_id && Array.isArray(records_id) && records_id.length > 0 && records_id.filter((e) => { return mongoose.isValidObjectId(e) }).length != records_id.length) {
-        callback({ msg: "Tableau non conforme plusieurs éléments ne sont pas des ObjectId.", type_error: 'no-valid', fields: records_id.filter((e) => { return !mongoose.isValidObjectId(e) }) });
+    else if (rappels_id && Array.isArray(rappels_id) && rappels_id.length > 0 && rappels_id.filter((e) => { return mongoose.isValidObjectId(e) }).length != rappels_id.length) {
+        callback({ msg: "Tableau non conforme plusieurs éléments ne sont pas des ObjectId.", type_error: 'no-valid', fields: rappels_id.filter((e) => { return !mongoose.isValidObjectId(e) }) });
     }
-    else if (records_id && !Array.isArray(records_id)) {
+    else if (rappels_id && !Array.isArray(rappels_id)) {
         callback({ msg: "L'argement n'est pas un tableau.", type_error: 'no-valid' });
 
     }
@@ -251,15 +251,15 @@ module.exports.findManyRecordsById = function (records_id, options, callback) {
     }
 }
 
-module.exports.updateOneRecord = async function (record_id, update, options, callback) {
-    if (record_id && mongoose.isValidObjectId(record_id)) {
+module.exports.updateOneRappel = async function (rappel_id, update, options, callback) {
+    if (rappel_id && mongoose.isValidObjectId(rappel_id)) {
 
-        Record.findByIdAndUpdate(new ObjectId(record_id), update, { returnDocument: 'after', runValidators: true }).then((value) => {
+        Rappel.findByIdAndUpdate(new ObjectId(rappel_id), update, { returnDocument: 'after', runValidators: true }).then((value) => {
             try {
                 if (value)
                     callback(null, value.toObject())
                 else
-                    callback({ msg: "Record non trouvé.", type_error: "no-found" });
+                    callback({ msg: "Rappel non trouvé.", type_error: "no-found" });
 
             } catch (e) {
                 console.log(e)
@@ -300,12 +300,12 @@ module.exports.updateOneRecord = async function (record_id, update, options, cal
 }
 
 
-module.exports.updateManyRecords = async function (records_id, update, options, callback) {
-    if (records_id && Array.isArray(records_id) && records_id.length > 0 && records_id.filter((e) => { return mongoose.isValidObjectId(e) }).length == records_id.length) {
-        records_id = records_id.map((e) => { return new ObjectId(e) })
+module.exports.updateManyRappels = async function (rappels_id, update, options, callback) {
+    if (rappels_id && Array.isArray(rappels_id) && rappels_id.length > 0 && rappels_id.filter((e) => { return mongoose.isValidObjectId(e) }).length == rappels_id.length) {
+        rappels_id = rappels_id.map((e) => { return new ObjectId(e) })
 
 
-        Record.updateMany({ _id: records_id }, update, { runValidators: true }).then((value) => {
+        Rappel.updateMany({ _id: rappels_id }, update, { runValidators: true }).then((value) => {
             try {
                 if (value && value.matchedCount != 0) {
                     callback(null, value)
@@ -350,14 +350,14 @@ module.exports.updateManyRecords = async function (records_id, update, options, 
     }
 }
 
-module.exports.deleteOneRecord = function (record_id, options, callback) {
-    if (record_id && mongoose.isValidObjectId(record_id)) {
-        Record.findByIdAndDelete(record_id).then((value) => {
+module.exports.deleteOneRappel = function (rappel_id, options, callback) {
+    if (rappel_id && mongoose.isValidObjectId(rappel_id)) {
+        Rappel.findByIdAndDelete(rappel_id).then((value) => {
             try {
                 if (value)
                     callback(null, value.toObject())
                 else
-                    callback({ msg: "Record non trouvé.", type_error: "no-found" });
+                    callback({ msg: "Rappel non trouvé.", type_error: "no-found" });
             }
             catch (e) {
                 console.log(e)
@@ -372,19 +372,19 @@ module.exports.deleteOneRecord = function (record_id, options, callback) {
     }
 }
 
-module.exports.deleteManyRecords = function (records_id, options, callback) {
-    if (records_id && Array.isArray(records_id) && records_id.length > 0 && records_id.filter((e) => { return mongoose.isValidObjectId(e) }).length == records_id.length) {
-        records_id = records_id.map((e) => { return new ObjectId(e) })
-        Record.deleteMany({ _id: records_id }).then((value) => {
+module.exports.deleteManyRappels = function (rappels_id, options, callback) {
+    if (rappels_id && Array.isArray(rappels_id) && rappels_id.length > 0 && rappels_id.filter((e) => { return mongoose.isValidObjectId(e) }).length == rappels_id.length) {
+        rappels_id = rappels_id.map((e) => { return new ObjectId(e) })
+        Rappel.deleteMany({ _id: rappels_id }).then((value) => {
             callback(null, value)
         }).catch((err) => {
             callback({ msg: "Erreur mongo suppression.", type_error: "error-mongo" });
         })
     }
-    else if (records_id && Array.isArray(records_id) && records_id.length > 0 && records_id.filter((e) => { return mongoose.isValidObjectId(e) }).length != records_id.length) {
-        callback({ msg: "Tableau non conforme plusieurs éléments ne sont pas des ObjectId.", type_error: 'no-valid', fields: records_id.filter((e) => { return !mongoose.isValidObjectId(e) }) });
+    else if (rappels_id && Array.isArray(rappels_id) && rappels_id.length > 0 && rappels_id.filter((e) => { return mongoose.isValidObjectId(e) }).length != rappels_id.length) {
+        callback({ msg: "Tableau non conforme plusieurs éléments ne sont pas des ObjectId.", type_error: 'no-valid', fields: rappels_id.filter((e) => { return !mongoose.isValidObjectId(e) }) });
     }
-    else if (records_id && !Array.isArray(records_id)) {
+    else if (rappels_id && !Array.isArray(rappels_id)) {
         callback({ msg: "L'argement n'est pas un tableau.", type_error: 'no-valid' });
 
     }

@@ -22,7 +22,7 @@ let fictifData = [
         sleepEnd,
         sleepDuration,
         sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-        sleepSound: faker.helpers.arrayElement(['snore in sleep', 'talk in sleep', 'move in sleep', 'wake up in the night']),
+        sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night']),
         user_id: rdm_user(tab_id_users)
     },
     {
@@ -31,7 +31,7 @@ let fictifData = [
         sleepEnd,
         sleepDuration,
         sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-        sleepSound: faker.helpers.arrayElement(['snore in sleep', 'talk in sleep', 'move in sleep', 'wake up in the night']),
+        sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night']),
         user_id: rdm_user(tab_id_users)
     },
     {
@@ -40,7 +40,7 @@ let fictifData = [
         sleepEnd,
         sleepDuration,
         sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-        sleepSound: faker.helpers.arrayElement(['snore in sleep', 'talk in sleep', 'move in sleep', 'wake up in the night']),
+        sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night']),
         user_id: rdm_user(tab_id_users)
     },
 ]
@@ -110,7 +110,7 @@ describe("CreateOneRecord", () => {
             sleepEnd,
             sleepDuration,
             sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-            sleepSound: faker.helpers.arrayElement(['snore in sleep', 'talk in sleep', 'move in sleep', 'wake up in the night']),
+            sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night']),
             user_id: rdm_user(tab_id_users)
 
         }
@@ -137,7 +137,7 @@ describe("CreateOneRecord", () => {
             sleepEnd,
             sleepDuration,
             sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-            sleepSound: faker.helpers.arrayElement(['snore in sleep', 'talk in sleep', 'move in sleep', 'wake up in the night']),
+            sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night']),
 
 
         }
@@ -163,7 +163,7 @@ describe("CreateManyRecords", () => {
             sleepEnd,
             sleepDuration,
             sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-            sleepSound: faker.helpers.arrayElement(['snore in sleep', 'talk in sleep', 'move in sleep', 'wake up in the night']),
+            sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night']),
             user_id: rdm_user(tab_id_users)
 
 
@@ -173,7 +173,7 @@ describe("CreateManyRecords", () => {
             sleepEnd,
             sleepDuration,
             sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-            sleepSound: faker.helpers.arrayElement(['snore in sleep', 'talk in sleep', 'move in sleep', 'wake up in the night']),
+            sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night']),
             user_id: rdm_user(tab_id_users)
 
 
@@ -186,7 +186,7 @@ describe("CreateManyRecords", () => {
             sleepEnd,
             sleepDuration,
             sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-            sleepSound: faker.helpers.arrayElement(['snore in sleep', 'talk in sleep', 'move in sleep', 'wake up in the night']),
+            sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night']),
             user_id: rdm_user(tab_id_users)
 
 
@@ -210,7 +210,7 @@ describe("CreateManyRecords", () => {
             sleepEnd,
             sleepDuration,
             sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-            sleepSound: faker.helpers.arrayElement(['snore in sleep', 'talk in sleep', 'move in sleep', 'wake up in the night']),
+            sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night']),
 
 
 
@@ -220,7 +220,7 @@ describe("CreateManyRecords", () => {
             sleepEnd,
             sleepDuration,
             sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-            sleepSound: faker.helpers.arrayElement(['snore in sleep', 'talk in sleep', 'move in sleep', 'wake up in the night']),
+            sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night']),
 
         }]
 
@@ -335,19 +335,19 @@ describe("findManyRecordsById", () => {
 
 describe("updateOneRecord", () => {
     it("Modifier un record correct. - S", (done) => {
-        RecordService.updateOneRecord(id_record_valid, { sleepSound: "snore in sleep", sleepQuality: "good" }, null, function (err, value) {
+        RecordService.updateOneRecord(id_record_valid, { sleepSound: "snore during sleep", sleepQuality: "good" }, null, function (err, value) {
             expect(value).to.be.a('object')
             expect(value).to.haveOwnProperty('_id')
             expect(value).to.haveOwnProperty('sleepSound')
             expect(value).to.haveOwnProperty('sleepQuality')
-            expect(value['sleepSound']).to.be.equal('snore in sleep')
+            expect(value['sleepSound']).to.be.equal('snore during sleep')
             expect(value['sleepQuality']).to.be.equal("good")
             done()
 
         })
     })
     it("Modifier un record avec id incorrect. - E", (done) => {
-        RecordService.updateOneRecord("1200", { sleepSound: "snore in sleep", sleepQuality: "good" }, null, function (err, value) {
+        RecordService.updateOneRecord("1200", { sleepSound: "snore during sleep", sleepQuality: "good" }, null, function (err, value) {
             expect(err).to.be.a('object')
             expect(err).to.haveOwnProperty('msg')
             expect(err).to.haveOwnProperty('type_error')
@@ -370,7 +370,7 @@ describe("updateOneRecord", () => {
 
 describe("updateManyRecords", () => {
     it("Modifier plusieurs records correctement. - S", (done) => {
-        RecordService.updateManyRecords(tab_id_records, { sleepSound: "snore in sleep", sleepQuality: "good" }, null, function (err, value) {
+        RecordService.updateManyRecords(tab_id_records, { sleepSound: "snore during sleep", sleepQuality: "good" }, null, function (err, value) {
             expect(value).to.haveOwnProperty('modifiedCount')
             expect(value).to.haveOwnProperty('matchedCount')
             expect(value['matchedCount']).to.be.equal(tab_id_records.length)
@@ -380,7 +380,7 @@ describe("updateManyRecords", () => {
         })
     })
     it("Modifier plusieurs records avec id incorrect. - E", (done) => {
-        RecordService.updateManyRecords("1200", { sleepSound: "snore in sleep", sleepQuality: "good" }, null, function (err, value) {
+        RecordService.updateManyRecords("1200", { sleepSound: "snore during sleep", sleepQuality: "good" }, null, function (err, value) {
             expect(err).to.be.a('object')
             expect(err).to.haveOwnProperty('msg')
             expect(err).to.haveOwnProperty('type_error')

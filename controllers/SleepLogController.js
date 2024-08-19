@@ -108,7 +108,7 @@ module.exports.findOneSleepLogById = function (req, res) {
 
 // La fonction permet de chercher plusieurs sleepLogs
 module.exports.findManySleepLogs = function (req, res) {
-    req.log.info("Recherche de sleepLOgs avec un champ choisi")
+    req.log.info("Recherche de sleepLogs avec un champ choisi")
     let page = req.query.page
     let pageSize = req.query.pageSize
     let searchValue = req.query.q
@@ -143,7 +143,7 @@ module.exports.findManySleepLogsById = function (req, res) {
         arg = [arg]
     var opts = { populate: req.query.populate }
     SleepLogService.findManySleepLogsById(arg, opts, function (err, value) {
-        console.log(err, value)
+
         if (err && err.type_error == "no-found") {
             res.statusCode = 404
             res.send(err)

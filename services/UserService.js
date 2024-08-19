@@ -18,7 +18,7 @@ module.exports.loginUser = async function (username, password, options, callback
         else {
             if (bcrypt.compareSync(password, value.password)) {
                 var token = TokenUtils.createToken({ _id: value._id }, null)
-                console.log(token, value)
+
                 module.exports.updateOneUser(value._id, { token: token }, null, (err, v) => {
 
                     callback(null, { ...value, token: token })
@@ -173,7 +173,7 @@ module.exports.findManyUsers = function (search, limit, page, options, callback)
     if (typeof page !== "number" || typeof limit !== "number" || isNaN(page) || isNaN(limit)) {
         callback({ msg: `format de ${typeof page !== "number" ? "page" : "limit"} est incorrect`, type_error: "no-valid" })
     } else {
-        let query_mongo = search ? { $or: _.map(["firstName", "lastName", "username", "phone", "email"], (e) => { return { [e]: { $regex: search } } }) } : {}
+        let query_mongo = search ? { $or: _.map(["personnel", "consentement", "username", "conseil", "email"], (e) => { return { [e]: { $regex: search } } }) } : {}
         User.countDocuments(query_mongo).then((value) => {
             if (value > 0) {
                 const skip = ((page - 1) * limit)
@@ -295,33 +295,34 @@ module.exports.updateOneUser = async function (user_id, update, options, callbac
 
 
 module.exports.updateManyUsers = async function (users_id, update, options, callback) {
+
     if (users_id && Array.isArray(users_id) && users_id.length > 0 && users_id.filter((e) => { return mongoose.isValidObjectId(e) }).length == users_id.length) {
-        users_id = users_id.map((e) => { return new ObjectId(e) })
         const salt = await bcrypt.genSalt(SALT_WORK8FACTOR)
-        if (update && update.password)
+        if (update && update.password) {
             update.password = await bcrypt.hash(update.password, salt)
-        console.log("Info user update (email, password)", update)
+        }
+        users_id = users_id.map((e) => { return new ObjectId(e) })
         User.updateMany({ _id: users_id }, update, { runValidators: true }).then((value) => {
             try {
                 if (value && value.matchedCount != 0) {
                     callback(null, value)
                 } else {
-                    callback({ msg: 'Utilisateurs non trouvé', type_error: 'no-found' })
+                    callback({ msg: 'Utilisateurs non trouver', type_error: 'no-found' })
                 }
             } catch (e) {
-                console.log(e)
+
                 callback(e)
             }
         }).catch((errors) => {
             if (errors.code === 11000) {
                 var field = Object.keys(errors.keyPattern)[0]
                 const duplicateErrors = {
-                    msg: `Duplicate key error: ${field}must be unique`,
+                    msg: `Duplicate key error: ${field} must be unique.`,
                     fields_with_error: [field],
                     index: errors.index,
-                    fields: { [field]: `The ${field}is already taken.` },
+                    fields: { [field]: `The ${field} is already taken.` },
                     type_error: "duplicate"
-                }
+                };
                 callback(duplicateErrors)
             } else {
                 errors = errors['errors']

@@ -1,37 +1,43 @@
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId
 
-var NotificationSchema = mongoose.Schema({
+var RappelSchema = mongoose.Schema({
     user_id: {
         type: ObjectId,
         ref: "User",
         required: true
     },
-    message: {
+
+    titre: {
         type: String,
         required: true
     },
-    notifType: {
+    description: {
         type: String,
+        required: true
+    },
+    date: {
+        type: Date,
+        required: true
+    },
+    frequence: {
+        type: Number,
         required: true
     },
     statut: {
         type: String,
         required: true
     },
-
-    lu: {
-        type: Boolean,
-        default: false,
-        required: true
-    },
-    created_at: {
-        type: Date,
+    notifType: {
+        type: String,
         required: true
     }
+}
 
 
-});
+);
 
 
-module.exports = NotificationSchema
+module.exports = RappelSchema
+
+

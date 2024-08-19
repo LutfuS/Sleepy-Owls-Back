@@ -1,10 +1,44 @@
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId
-var SleepLogsSchema = mongoose.Schema({
+var SleepLogSchema = mongoose.Schema({
     user_id: {
         type: ObjectId,
         ref: "User",
         required: true
+    },
+    sleepStart: {
+        type: Date,
+        required: true,
+
+    },
+    sleepEnd: {
+        type: Date,
+        required: true,
+    },
+    sleepDuration: {
+        type: Date,
+        required: true,
+
+    },
+
+    sleepQuality: {
+        type: String,
+        required: true,
+
+    },
+    sleepSound: {
+        type: String,
+        required: true,
+
+    },
+    created_at: {
+        type: Date,
+        default: new Date()
+    },
+    updated_at: {
+        type: Date,
+        default: new Date()
+
     },
     logDate: {
         type: Date,
@@ -21,10 +55,7 @@ var SleepLogsSchema = mongoose.Schema({
         max: 5,
         required: true
     },
-    token: {
-        type: String,
-        required: false
-    }
+
 
 
 
@@ -32,4 +63,4 @@ var SleepLogsSchema = mongoose.Schema({
 
 );
 
-module.exports = SleepLogsSchema
+module.exports = SleepLogSchema

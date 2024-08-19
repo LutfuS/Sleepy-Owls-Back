@@ -38,8 +38,10 @@ app.use(passport.session())
 
 // Déclaration des controller pour utilisateurs
 const UserController = require("./controllers/UserController");
-const RecordController = require("./controllers/RecordController")
+
 const SleepLogController = require("./controllers/SleepLogController")
+const NotificationController = require("./controllers/NotificationController")
+const RappelController = require("./controllers/RappelController")
 
 // Déclaration des middleware
 const DataBaseMiddleWare = require("./middlewares/database");
@@ -75,32 +77,13 @@ app.get("/user", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt',
 
 
 
-// Création des endpoint pour les records
-app.get("/generateData/:id", RecordController.generateData)
 
-app.post("/record", DataBaseMiddleWare.CheckConnexion, RecordController.createOneRecord);
-
-app.post("/records", DataBaseMiddleWare.CheckConnexion, RecordController.createManyRecords);
-
-app.get("/record/:id", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), RecordController.findOneRecordById);
-
-app.get('/records_by_filters', DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), RecordController.findManyRecords)
-
-app.get('/records', DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), RecordController.findManyRecordsById)
-
-app.put("/record/:id", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), RecordController.updateOneRecord);
-
-app.put("/records", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), RecordController.updateManyRecords);
-
-app.delete("/record/:id", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), RecordController.deleteOneRecord);
-
-app.delete("/records", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), RecordController.deleteManyRecords);
-
-app.get("/record", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), RecordController.findOneRecord)
 
 
 // Création des endpoint pour les sleepLog
 
+
+app.get("/generateData/:id", SleepLogController.generateData)
 
 app.post("/sleepLog", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), SleepLogController.createOneSleepLog);
 
@@ -121,6 +104,53 @@ app.delete("/sleepLog/:id", DataBaseMiddleWare.CheckConnexion, passport.authenti
 app.delete("/sleepLogs", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), SleepLogController.deleteManySleepLogs);
 
 app.get("/sleepLog", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), SleepLogController.findOneSleepLog)
+
+
+// Création des endpoint pour les notifications
+
+
+app.post("/notification", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), NotificationController.createOneNotification);
+
+app.post("/notifications", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), NotificationController.createManyNotifications);
+
+app.get("/notification/:id", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), NotificationController.findOneNotificationById);
+
+app.get('/notifications_by_filters', DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), NotificationController.findManyNotifications)
+
+app.get('/notifications', DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), NotificationController.findManyNotificationsById)
+
+app.put("/notification/:id", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), NotificationController.updateOneNotification);
+
+app.put("/notifications", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), NotificationController.updateManyNotifications);
+
+app.delete("/notification/:id", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), NotificationController.deleteOneNotification);
+
+app.delete("/notifications", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), NotificationController.deleteManyNotifications);
+
+app.get("/notification", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), NotificationController.findOneNotification)
+
+// Création des endpoint pour les notifications
+
+
+app.post("/rappel", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), RappelController.createOneRappel);
+
+app.post("/rappels", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), RappelController.createManyRappels);
+
+app.get("/rappel/:id", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), RappelController.findOneRappelById);
+
+app.get('/rappels_by_filters', DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), RappelController.findManyRappels)
+
+app.get('/rappels', DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), RappelController.findManyRappelsById)
+
+app.put("/rappel/:id", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), RappelController.updateOneRappel);
+
+app.put("/rappels", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), RappelController.updateManyRappels);
+
+app.delete("/rappel/:id", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), RappelController.deleteOneRappel);
+
+app.delete("/rappels", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), RappelController.deleteManyRappels);
+
+app.get("/rappel", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), RappelController.findOneRappel)
 
 
 // 2e chose à faire : Créer le server avec app.listen

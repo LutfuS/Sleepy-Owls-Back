@@ -1,14 +1,13 @@
-const SleepLogsSchema = require('../schemas/SleepLog')
+const SleepLogSchema = require('../schemas/SleepLog')
 const _ = require('lodash')
 const async = require('async')
 const mongoose = require('mongoose')
 const ObjectId = mongoose.Types.ObjectId
 const bcrypt = require('bcrypt')
-const TokenUtils = require('../utils/token')
-
+const TokenUtils = require('./../utils/token')
 const SALT_WORK8FACTOR = 10
 
-var SleepLog = mongoose.model('SleepLogs', SleepLogsSchema)
+var SleepLog = mongoose.model('SleepLog', SleepLogSchema)
 
 SleepLog.createIndexes()
 
@@ -83,7 +82,7 @@ module.exports.createManySleepLogs = async function (sleepLogs, options, callbac
         callback(errors);
     } else {
         try {
-            // Tenter d'insérer les logs
+            // Tenter d'insérer les utilisateurs
             const data = await SleepLog.insertMany(sleepLogs, { ordered: false });
             callback(null, data);
         } catch (error) {
@@ -108,7 +107,7 @@ module.exports.createManySleepLogs = async function (sleepLogs, options, callbac
 };
 
 module.exports.findOneSleepLog = function (tab_field, value, options, callback) {
-    var field_unique = ["user_id", "note"]
+    var field_unique = ["user_id", "sleepQuality"]
     if (tab_field && Array.isArray(tab_field) && value && _.filter(tab_field, (e) => { return field_unique.indexOf(e) == -1 }).length == 0) {
         var obj_find = []
         _.forEach(tab_field, (e) => {
@@ -118,7 +117,7 @@ module.exports.findOneSleepLog = function (tab_field, value, options, callback) 
             if (value)
                 callback(null, value.toObject())
             else {
-                callback({ msg: "sleepLog non trouvé.", type_error: "no-found" })
+                callback({ msg: "SleepLog non trouvé.", type_error: "no-found" })
             }
         }).catch((err) => {
             callback({ msg: "Error interne mongo", type_error: 'error-mongo' })
@@ -179,7 +178,7 @@ module.exports.findOneSleepLogById = function (sleepLog_id, options, callback) {
                 if (value) {
                     callback(null, value.toObject());
                 } else {
-                    callback({ msg: "Aucune note trouvé.", type_error: "no-found" });
+                    callback({ msg: "Aucun sleepLog trouvé.", type_error: "no-found" });
                 }
             }
             catch (e) {
@@ -201,7 +200,7 @@ module.exports.findManySleepLogsById = function (sleepLogs_id, options, callback
                 if (value && Array.isArray(value) && value.length != 0) {
                     callback(null, value);
                 } else {
-                    callback({ msg: "Aucun note trouvé.", type_error: "no-found" });
+                    callback({ msg: "Aucun sleepLog trouvé.", type_error: "no-found" });
                 }
             }
             catch (e) {
@@ -252,15 +251,15 @@ module.exports.findManySleepLogsById = function (sleepLogs_id, options, callback
     }
 }
 
-module.exports.updateOneSleepLog = async function (sleepLog, update, options, callback) {
-    if (sleepLog && mongoose.isValidObjectId(sleepLog)) {
+module.exports.updateOneSleepLog = async function (sleepLog_id, update, options, callback) {
+    if (sleepLog_id && mongoose.isValidObjectId(sleepLog_id)) {
 
-        SleepLog.findByIdAndUpdate(new ObjectId(sleepLog), update, { returnDocument: 'after', runValidators: true }).then((value) => {
+        SleepLog.findByIdAndUpdate(new ObjectId(sleepLog_id), update, { returnDocument: 'after', runValidators: true }).then((value) => {
             try {
                 if (value)
                     callback(null, value.toObject())
                 else
-                    callback({ msg: "note non trouvé.", type_error: "no-found" });
+                    callback({ msg: "SleepLog non trouvé.", type_error: "no-found" });
 
             } catch (e) {
                 console.log(e)
@@ -311,7 +310,7 @@ module.exports.updateManySleepLogs = async function (sleepLogs_id, update, optio
                 if (value && value.matchedCount != 0) {
                     callback(null, value)
                 } else {
-                    callback({ msg: 'notes non trouvé', type_error: 'no-found' })
+                    callback({ msg: 'Utilisateurs non trouvé', type_error: 'no-found' })
                 }
             } catch (e) {
                 console.log(e)
@@ -351,14 +350,14 @@ module.exports.updateManySleepLogs = async function (sleepLogs_id, update, optio
     }
 }
 
-module.exports.deleteOneSleepLog = function (sleepLog, options, callback) {
-    if (sleepLog && mongoose.isValidObjectId(sleepLog)) {
-        SleepLog.findByIdAndDelete(sleepLog).then((value) => {
+module.exports.deleteOneSleepLog = function (sleepLog_id, options, callback) {
+    if (sleepLog_id && mongoose.isValidObjectId(sleepLog_id)) {
+        SleepLog.findByIdAndDelete(sleepLog_id).then((value) => {
             try {
                 if (value)
                     callback(null, value.toObject())
                 else
-                    callback({ msg: "note non trouvé.", type_error: "no-found" });
+                    callback({ msg: "SleepLog non trouvé.", type_error: "no-found" });
             }
             catch (e) {
                 console.log(e)

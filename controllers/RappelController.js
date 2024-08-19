@@ -1,4 +1,4 @@
-const RecordService = require('../services/RecordService')
+const RappelService = require('../services/RappelService')
 const LoggerHttp = require('../utils/logger').http
 
 module.exports.generateData = function (req, res) {
@@ -15,11 +15,11 @@ module.exports.generateData = function (req, res) {
     });
 }
 
-// La fonction permet d'ajouter un record
-module.exports.createOneRecord = function (req, res) {
+// La fonction permet d'ajouter un rappel
+module.exports.createOneRappel = function (req, res) {
     LoggerHttp(req, res)
-    req.log.info("Création d'un record")
-    RecordService.createOneRecord(req.body, null, function (err, value) {
+    req.log.info("Création d'un rappel")
+    RappelService.createOneRappel(req.body, null, function (err, value) {
         if (err && err.type_error == "no found") {
             res.statusCode = 404
             res.send(err)
@@ -39,10 +39,10 @@ module.exports.createOneRecord = function (req, res) {
     })
 }
 
-// La fonction permet d'ajouter plusieurs records
-module.exports.createManyRecords = function (req, res) {
-    req.log.info("Création de plusieurs records")
-    RecordService.createManyRecords(req.body, null, function (err, value) {
+// La fonction permet d'ajouter plusieurs rappels
+module.exports.createManyRappels = function (req, res) {
+    req.log.info("Création de plusieurs rappels")
+    RappelService.createManyRappels(req.body, null, function (err, value) {
         if (err) {
             res.statusCode = 405
             res.send(err)
@@ -55,14 +55,14 @@ module.exports.createManyRecords = function (req, res) {
     })
 }
 
-// La fonction permet de chercher un record
-module.exports.findOneRecord = function (req, res) {
-    req.log.info("Recherche d'un record avec un champ choisi")
+// La fonction permet de chercher un rappel
+module.exports.findOneRappel = function (req, res) {
+    req.log.info("Recherche d'un rappel avec un champ choisi")
     let fields = req.query.fields
     if (fields && !Array.isArray(fields))
         fields = [fields]
     var opts = { populate: req.query.populate }
-    RecordService.findOneRecord(fields, req.query.value, opts, function (err, value) {
+    RappelService.findOneRappel(fields, req.query.value, opts, function (err, value) {
         if (err && err.type_error == "no-found") {
             res.statusCode = 404
             res.send(err)
@@ -82,11 +82,11 @@ module.exports.findOneRecord = function (req, res) {
     })
 }
 
-// La fonction permet de chercher un record avec id
-module.exports.findOneRecordById = function (req, res) {
-    req.log.info("Recherche d'un record avec id")
+// La fonction permet de chercher un rappel avec id
+module.exports.findOneRappelById = function (req, res) {
+    req.log.info("Recherche d'un rappel avec id")
     var opts = { populate: req.query.populate }
-    RecordService.findOneRecordById(req.params.id, opts, function (err, value) {
+    RappelService.findOneRappelById(req.params.id, opts, function (err, value) {
         if (err && err.type_error == "no-found") {
             res.statusCode = 404
             res.send(err)
@@ -106,14 +106,14 @@ module.exports.findOneRecordById = function (req, res) {
     })
 }
 
-// La fonction permet de chercher plusieurs records
-module.exports.findManyRecords = function (req, res) {
-    req.log.info("Recherche d'un record avec un champ choisi")
+// La fonction permet de chercher plusieurs rappels
+module.exports.findManyRappels = function (req, res) {
+    req.log.info("Recherche d'un rappel avec un champ choisi")
     let page = req.query.page
     let pageSize = req.query.pageSize
     let searchValue = req.query.q
     var opts = { populate: req.query.populate }
-    RecordService.findManyRecords(searchValue, page, pageSize, opts, function (err, value) {
+    RappelService.findManyRappels(searchValue, page, pageSize, opts, function (err, value) {
 
         if (err && err.type_error == "no-found") {
             res.statusCode = 404
@@ -134,16 +134,16 @@ module.exports.findManyRecords = function (req, res) {
     })
 }
 
-// La fonction permet de chercher plusieurs records
-module.exports.findManyRecordsById = function (req, res) {
+// La fonction permet de chercher plusieurs rappels
+module.exports.findManyRappelsById = function (req, res) {
     LoggerHttp(req, res)
-    req.log.info("Recherche de plusieurs records", req.query.id)
+    req.log.info("Recherche de plusieurs rappels", req.query.id)
     var arg = req.query.id
     if (arg && !Array.isArray(arg))
         arg = [arg]
     var opts = { populate: req.query.populate }
-    RecordService.findManyRecordsById(arg, opts, function (err, value) {
-        console.log(err, value)
+    RappelService.findManyRappelsById(arg, opts, function (err, value) {
+
         if (err && err.type_error == "no-found") {
             res.statusCode = 404
             res.send(err)
@@ -162,11 +162,11 @@ module.exports.findManyRecordsById = function (req, res) {
         }
     })
 }
-// La fonction permet de modifier un record
-module.exports.updateOneRecord = function (req, res) {
+// La fonction permet de modifier un rappel
+module.exports.updateOneRappel = function (req, res) {
     LoggerHttp(req, res)
-    req.log.info("Modification d'un record")
-    RecordService.updateOneRecord(req.params.id, req.body, null, function (err, value) {
+    req.log.info("Modification d'un rappel")
+    RappelService.updateOneRappel(req.params.id, req.body, null, function (err, value) {
         if (err && err.type_error == "no-found") {
             res.statusCode = 404
             res.send(err)
@@ -185,15 +185,15 @@ module.exports.updateOneRecord = function (req, res) {
     })
 }
 
-// La fonction permet de modifier plusieurs records
-module.exports.updateManyRecords = function (req, res) {
+// La fonction permet de modifier plusieurs rappels
+module.exports.updateManyRappels = function (req, res) {
     LoggerHttp(req, res)
-    req.log.info("Modification de plusieurs records")
+    req.log.info("Modification de plusieurs rappels")
     var arg = req.query.id
     if (arg && !Array.isArray(arg))
         arg = [arg]
     var updateData = req.body
-    RecordService.updateManyRecords(arg, updateData, null, function (err, value) {
+    RappelService.updateManyRappels(arg, updateData, null, function (err, value) {
         if (err && err.type_error == "no-found") {
             res.statusCode = 404
             res.send(err)
@@ -213,11 +213,11 @@ module.exports.updateManyRecords = function (req, res) {
 }
 
 
-// La fonction permet de supprimer un record
-module.exports.deleteOneRecord = function (req, res) {
+// La fonction permet de supprimer un rappel
+module.exports.deleteOneRappel = function (req, res) {
     LoggerHttp(req, res)
-    req.log.info("Suppression d'un record")
-    RecordService.deleteOneRecord(req.params.id, null, function (err, value) {
+    req.log.info("Suppression d'un rappel")
+    RappelService.deleteOneRappel(req.params.id, null, function (err, value) {
         if (err && err.type_error == "no-found") {
             res.statusCode = 404
             res.send(err)
@@ -237,14 +237,14 @@ module.exports.deleteOneRecord = function (req, res) {
     })
 }
 
-// La fonction permet de supprimer plusieurs records
-module.exports.deleteManyRecords = function (req, res) {
+// La fonction permet de supprimer plusieurs rappels
+module.exports.deleteManyRappels = function (req, res) {
     LoggerHttp(req, res)
-    req.log.info("Suppression de plusieurs records")
+    req.log.info("Suppression de plusieurs rappels")
     var arg = req.query.id
     if (arg && !Array.isArray(arg))
         arg = [arg]
-    RecordService.deleteManyRecords(arg, null, function (err, value) {
+    RappelService.deleteManyRappels(arg, null, function (err, value) {
         if (err && err.type_error == "no-found") {
             res.statusCode = 404
             res.send(err)
@@ -262,7 +262,4 @@ module.exports.deleteManyRecords = function (req, res) {
         }
     })
 }
-
-
-
 
