@@ -15,22 +15,12 @@ var token = ""
 describe("POST - /user", () => {
     it("Ajouter un utilisateur. - S", (done) => {
         chai.request(server).post('/user').send({
-            username: "john",
+
             password: "fggsdqge",
             email: "johnu.us@gmail.com",
-            personnel: {
-                compte: "ze10",
-                consentement: true
-            },
-            alarme: {
-                vibration: true
-            },
-            conseil: {
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                texte: "SUUUUUUUU",
-                statut: true
-            }
-
+            personnel_consentement: true,
+            alarme_vibration: true,
+            conseil_statut: true
         }).end((err, res) => {
             expect(res).to.have.status(201)
             user = res.body
@@ -41,67 +31,41 @@ describe("POST - /user", () => {
     it("Ajouter un utilisateur incorrect. (Sans email) - E", (done) => {
         chai.request(server).post('/user').send({
 
-            username: 'dwarfSlayr',
+
 
             password: "fggsdqge",
-            personnel: {
-                compte: "ze11",
-                consentement: true
-            },
-            alarme: {
-                vibration: true
-            },
-            conseil: {
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                texte: "SUUUUUUUU",
-                statut: true
-            }
+            personnel_consentement: true,
+            alarme_vibration: false,
+            conseil_statut: true
         }).end((err, res) => {
             expect(res).to.have.status(405)
             done()
         })
     })
-    it("Ajouter un utilisateur incorrect. (Avec un username existant) - E", (done) => {
+    it("Ajouter un utilisateur incorrect. (Avec un email existant) - E", (done) => {
         chai.request(server).post('/user').send({
 
-            username: "johnh",
+
             password: "fggsdqge",
             email: "johnu.us@gmail.com",
-            personnel: {
-                compte: "ze12",
-                consentement: true
-            },
-            alarme: {
-                vibration: true
-            },
-            conseil: {
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                texte: "SUUUUUUUU",
-                statut: true
-            }
+            personnel_consentement: true,
+            alarme_vibration: true,
+            conseil_statut: true,
         }).end((err, res) => {
             expect(res).to.have.status(405)
+
             done()
         })
     })
     it("Ajouter un utilisateur incorrect. (Avec un champ vide) - E", (done) => {
         chai.request(server).post('/user').send({
 
-            username: "",
+
             password: "fggsdqge",
-            email: "johnu.us@gmail.com",
-            personnel: {
-                compte: "ze13",
-                consentement: true
-            },
-            alarme: {
-                vibration: true
-            },
-            conseil: {
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                texte: "SUUUUUUUU",
-                statut: true
-            }
+            email: "",
+            personnel_consentement: true,
+            alarme_vibration: true,
+            conseil_statut: true
         }).end((err, res) => {
             expect(res).to.have.status(405)
             done()
@@ -113,40 +77,41 @@ describe("POST - /users", () => {
         chai.request(server).post('/users').send([
             {
 
-                username: "watevoyluirBiker",
-                email: "aurebiol.mosini@gmail.com",
+
+                email: "aurebjfiol.mosini@gmail.com",
                 password: "fggsdqge",
-                personnel: {
-                    compte: "ze14",
-                    consentement: true
-                },
-                alarme: {
-                    vibration: true
-                },
-                conseil: {
-                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                    texte: "SUUUUUUUU",
-                    statut: true
-                }
+                personnel_consentement: true,
+                alarme_vibration: true,
+                conseil_statut: true
             },
             {
 
-                username: "AleguluxLeGrand",
-                email: "alexgiluandre.porteron@gmail.com",
+
+                email: "alexgiluhgandre.porteron@gmail.com",
                 password: "fggsdqge",
-                personnel: {
-                    compte: "ze15",
-                    consentement: true
-                },
-                alarme: {
-                    vibration: true
-                },
-                conseil: {
-                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                    texte: "SUUUUUUUU",
-                    statut: true
-                }
+                personnel_consentement: true,
+                alarme_vibration: true,
+                conseil_statut: true
+            },
+            {
+
+
+                email: "Gege25@gmail.com",
+                password: "fggsdqge",
+                personnel_consentement: true,
+                alarme_vibration: true,
+                conseil_statut: true
+            },
+            {
+
+
+                email: "ElPointeron25@gmail.com",
+                password: "fggsdqge",
+                personnel_consentement: true,
+                alarme_vibration: true,
+                conseil_statut: true
             }
+
 
         ]).end((err, res) => {
             users = [...users, ...res.body]
@@ -159,83 +124,46 @@ describe("POST - /users", () => {
         chai.request(server).post('/users').send([
             {
 
-                username: "waterBike",
+
 
                 password: "fggsdqge",
-                personnel: {
-                    compte: "ze16",
-                    consentement: true
-                },
-                alarme: {
-                    vibration: true
-                },
-                conseil: {
-                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                    texte: "SUUUUUUUU",
-                    statut: true
-                }
+                personnel_consentement: true,
+                alarme_vibration: true,
+                conseil_statut: true
             },
             {
 
-                username: "AlexLeGran",
+
 
                 password: "fggsdqge",
-                email: "edouard.dupont7@gmail.com",
-                personnel: {
-                    compte: "ze17",
-                    consentement: true
-                },
-                alarme: {
-                    vibration: true
-                },
-                conseil: {
-                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                    texte: "SUUUUUUUU",
-                    statut: true
-                }
+                personnel_consentement: true,
+                alarme_vibration: true,
+                conseil_statut: true
             }
         ]).end((err, res) => {
             expect(res).to.have.status(405)
             done()
         });
     })
-    it("Ajouter des utilisateurs incorrect. (Avec un username existant) - E", (done) => {
+    it("Ajouter des utilisateurs incorrect. (Avec un email existant) - E", (done) => {
         chai.request(server).post('/users').send([
             {
 
-                username: "watevoyluirB4iker",
-                email: "aurel.moini@gmail.com",
+
+                email: "aurebjfiol.mosini@gmail.com",
                 password: "fggsdqge",
-                personnel: {
-                    compte: "ze2",
-                    consentement: true
-                },
-                alarme: {
-                    vibration: true
-                },
-                conseil: {
-                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                    texte: "SUUUUUUUU",
-                    statut: true
-                }
+                personnel_consentement: true,
+                alarme_vibration: true,
+                conseil_statut: true,
             },
             {
 
-                username: "AleLeGrand",
-                email: "alexndre.porteron@gmail.com",
+
+                email: "alexgiluandre.porteron@gmail.com",
                 password: "fggsdqge",
-                personnel: {
-                    compte: "ze2",
-                    consentement: true
-                },
-                alarme: {
-                    vibration: true
-                },
-                conseil: {
-                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                    texte: "SUUUUUUUU",
-                    statut: true
-                }
+                personnel_consentement: true,
+                alarme_vibration: true,
+                conseil_statut: true
             }
         ]).end((err, res) => {
             expect(res).to.have.status(405)
@@ -246,39 +174,21 @@ describe("POST - /users", () => {
         chai.request(server).post('/users').send([
             {
 
-                username: "",
-                email: "aurel.mosini@gmail.com",
+
+                email: "",
                 password: "fggsdqge",
-                personnel: {
-                    compte: "ze2",
-                    consentement: true
-                },
-                alarme: {
-                    vibration: true
-                },
-                conseil: {
-                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                    texte: "SUUUUUUUU",
-                    statut: true
-                }
+                personnel_consentement: true,
+                alarme_vibration: true,
+                conseil_statut: true,
             },
             {
 
-                username: "",
+
                 email: "alexandre.porteron@gmail.com",
-                password: "fggsdqge",
-                personnel: {
-                    compte: "ze2",
-                    consentement: true
-                },
-                alarme: {
-                    vibration: true
-                },
-                conseil: {
-                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                    texte: "SUUUUUUUU",
-                    statut: true
-                }
+                password: "",
+                personnel_consentement: true,
+                alarme_vibration: true,
+                conseil_statut: true,
             }
         ]).end((err, res) => {
             expect(res).to.have.status(405)
@@ -292,21 +202,12 @@ describe("POST - /users", () => {
 describe("POST -/login", () => {
     it("Authentifier un utilisateur correctement. -S", (done) => {
         chai.request(server).post('/login').send({
-            username: "john",
+
             password: "fggsdqge",
             email: "johnu.us@gmail.com",
-            personnel: {
-                compte: "ze10",
-                consentement: true
-            },
-            alarme: {
-                vibration: true
-            },
-            conseil: {
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                texte: "SUUUUUUUU",
-                statut: true
-            }
+            personnel_consentement: true,
+            alarme_vibration: true,
+            conseil_statut: true
 
         }).end((err, res) => {
             res.should.have.status(200)
@@ -318,44 +219,26 @@ describe("POST -/login", () => {
     })
     it("Authentifier un utilisateur incorrect. -E(avec password incorrect)", (done) => {
         chai.request(server).post('/login').send({
-            username: "john",
+
             password: "fggsdq<hrge",
             email: "johnds<vu.uszsvqsvs@gmail.com",
-            personnel: {
-                compte: "ze10",
-                consentement: true
-            },
-            alarme: {
-                vibration: true
-            },
-            conseil: {
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                texte: "SUUUUUUUU",
-                statut: true
-            }
+            personnel_consentement: true,
+            alarme_vibration: true,
+            conseil_statut: true,
 
         }).end((err, res) => {
             res.should.have.status(401)
             done()
         })
     })
-    it("Authentifier un utilisateur incorrect. -E(avec username incorrect)", (done) => {
+    it("Authentifier un utilisateur incorrect. -E(avec email incorrect)", (done) => {
         chai.request(server).post('/login').send({
-            username: "johzeqfcdcqn",
+
             password: "fggsdqge",
-            email: "johnu.us@gmail.com",
-            personnel: {
-                compte: "ze10",
-                consentement: true
-            },
-            alarme: {
-                vibration: true
-            },
-            conseil: {
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                texte: "SUUUUUUUU",
-                statut: true
-            }
+            email: "johrseg(enu.us@gmail.com",
+            personnel_consentement: true,
+            alarme_vibration: true,
+            conseil_statut: true
 
         }).end((err, res) => {
             res.should.have.status(401)
@@ -367,7 +250,7 @@ describe("POST -/login", () => {
 
 describe("GET -/user", () => {
     it("Chercher un utilisateur par les champs selectionnées -S", (done) => {
-        chai.request(server).get('/user').auth(token, { type: 'bearer' }).query({ fields: ["username"], value: users[0].username })
+        chai.request(server).get('/user').auth(token, { type: 'bearer' }).query({ fields: ["email"], value: users[0].email })
 
             .end((err, res) => {
                 res.should.have.status(200)
@@ -376,7 +259,7 @@ describe("GET -/user", () => {
     })
     it("Chercher un utilisateur avec un champ non autorisé -E", (done) => {
         chai.request(server).get('/user').auth(token, { type: 'bearer' })
-            .query({ fields: "firstName", value: users[0].username })
+            .query({ fields: "firstName", value: users[0].email })
             .end((err, res) => {
                 res.should.have.status(405)
                 done()
@@ -391,7 +274,7 @@ describe("GET -/user", () => {
     })
     it("Chercher un utilisateur inexistant -E", (done) => {
         chai.request(server).get('/user').auth(token, { type: 'bearer' })
-            .query({ fields: ["username"], value: ["MathisleMoche"] })
+            .query({ fields: ["email"], value: ["MathisleMoche"] })
             .end((err, res) => {
                 res.should.have.status(404)
                 done()
@@ -399,7 +282,7 @@ describe("GET -/user", () => {
     })
     it("Chercher un utilisateur sans authentification( par les champs sélectionnés) -E", (done) => {
         chai.request(server).get('/user')
-            .query({ fields: ["username"], value: ["MathisleMoche"] })
+            .query({ fields: ["email"], value: ["MathisleMoche"] })
             .end((err, res) => {
                 res.should.have.status(401)
                 done()
@@ -509,21 +392,12 @@ describe("GET - /users_by_filters", () => {
 describe("PUT - /user", () => {
     it("Modifier un utilisateur correct. - S", (done) => {
         chai.request(server).put('/user/' + users[0]._id).send({
-            username: "waterBikçer1",
+
             email: "aurel.mosin1i@gmail.com",
             password: "fggsdqge",
-            personnel: {
-                compte: "ze79",
-                consentement: true
-            },
-            alarme: {
-                vibration: true
-            },
-            conseil: {
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                texte: "SUUUUUUUU",
-                statut: true
-            }
+            personnel_consentement: true,
+            alarme_vibration: true,
+            conseil_statut: true
         }).auth(token, { type: 'bearer' })
             .end((err, res) => {
                 res.should.have.status(200);
@@ -533,21 +407,12 @@ describe("PUT - /user", () => {
 
     it("Modifier un utilisateur avec id incorrect. - E", (done) => {
         chai.request(server).put('/user/1654645').send({
-            username: "waterBiker",
+
             email: "aurel.mosini@gmail.com",
             password: "fggsdqge",
-            personnel: {
-                compte: "ze2",
-                consentement: true
-            },
-            alarme: {
-                vibration: true
-            },
-            conseil: {
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                texte: "SUUUUUUUU",
-                statut: true
-            }
+            personnel_consentement: true,
+            alarme_vibration: true,
+            conseil_statut: true,
 
         }).auth(token, { type: 'bearer' })
             .end((err, res) => {
@@ -557,21 +422,12 @@ describe("PUT - /user", () => {
     });
     it("Modifier un utilisateur avec id introuvable. - E", (done) => {
         chai.request(server).put('/user/66791cb82c6b5e01b4c1efd3').send({
-            username: "waterBiker",
+
             email: "aurel.mosini@gmail.com",
             password: "fggsdqge",
-            personnel: {
-                compte: "ze2",
-                consentement: true
-            },
-            alarme: {
-                vibration: true
-            },
-            conseil: {
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                texte: "SUUUUUUUU",
-                statut: true
-            }
+            personnel_consentement: true,
+            alarme_vibration: true,
+            conseil_statut: true
         }).auth(token, { type: 'bearer' })
             .end((err, res) => {
                 res.should.have.status(404);
@@ -580,21 +436,12 @@ describe("PUT - /user", () => {
     });
     it("Modifier les paramètres d'un user. - E", (done) => {
         chai.request(server).put('/user/' + users[0]._id).send({
-            username: "waterBiker",
+
             email: "aurel.mosini@gmail.com",
             password: "fggsdqge",
-            personnel: {
-                compte: "ze32",
-                consentement: true
-            },
-            alarme: {
-                vibration: false
-            },
-            conseil: {
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                texte: "SUUUUUUUU",
-                statut: true
-            }
+            personnel_consentement: true,
+            alarme_vibration: true,
+            conseil_statut: false,
         }).auth(token, { type: 'bearer' })
             .end((err, res) => {
                 res.should.have.status(200);
@@ -603,21 +450,12 @@ describe("PUT - /user", () => {
     });
     it("Modifier un utilisateur avec des champs requis vide. - E", (done) => {
         chai.request(server).put('/user/' + users[0]._id).send({
-            username: "",
-            email: "aurel.mosini@gmail.com",
+
+            email: "",
             password: "fggsdqge",
-            personnel: {
-                compte: "ze2",
-                consentement: true
-            },
-            alarme: {
-                vibration: true
-            },
-            conseil: {
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                texte: "SUUUUUUUU",
-                statut: true
-            }
+            personnel_consentement: true,
+            alarme_vibration: true,
+            conseil_statut: true
         }).auth(token, { type: 'bearer' })
             .end((err, res) => {
                 res.should.have.status(405);
@@ -626,7 +464,7 @@ describe("PUT - /user", () => {
     });
     it("Modifier un utilisateur avec champ unique existant. - E", (done) => {
         chai.request(server).put('/user/' + users[0]._id).send({
-            username: users[1].username
+            email: users[1].email
         }).auth(token, { type: 'bearer' })
             .end((err, res) => {
                 res.should.have.status(405);
@@ -635,21 +473,12 @@ describe("PUT - /user", () => {
     });
     it("Modifier un utilisateur correct sans être authentifier. - E", (done) => {
         chai.request(server).put('/user/' + users[0]._id).send({
-            username: "waterBiker",
+
             email: "aurel.mosini@gmail.com",
             password: "fggsdqge",
-            personnel: {
-                compte: "ze2",
-                consentement: true
-            },
-            alarme: {
-                vibration: true
-            },
-            conseil: {
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                texte: "SUUUUUUUU",
-                statut: true
-            }
+            personnel_consentement: true,
+            alarme_vibration: true,
+            conseil_statut: true
         })
             .end((err, res) => {
                 res.should.have.status(401);
@@ -657,81 +486,76 @@ describe("PUT - /user", () => {
             });
     });
 });
-// describe("PUT -/users", () => {
-//     it("Modifier plusieurs utilisateurs. -S", (done) => {
-//         chai.request(server).put('/users').query({ id: _.map(users, '_id') }).send({
-//             username: "wateeeeerBiker",
-//             email: "aurrrrrrrrel.mosini@gmail.com",
-//             password: "fggsdqge",
-//             personnel: {
-//                 compte: "ze25544hhhhh7",
-//                 consentement: true
-//             },
-//             alarme: {
-//                 vibration: true
-//             },
-//             conseil: {
-//                 image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-//                 texte: "SUUUUUUUU",
-//                 statut: true
-//             }
+describe("PUT -/users", () => {
+    it("Modifier plusieurs utilisateurs. -S", (done) => {
+        chai.request(server).put('/users').query({ id: _.map(users, '_id') }).send({
 
-//         }).auth(token, { type: 'bearer' })
-//             .end((err, res) => {
-//                 // res.should.have.status(200)
-//                 console.log(err, res)
-//                 done()
-//             })
-//     })
-//     it("Modifier plusieurs utilisateurs avec des id invalide. -E", (done) => {
-//         chai.request(server).put('/users').query({ id: ['234465465', '453564'] }).send({
-//             username: "waterytdjBizgzegker",
 
-//         }).auth(token, { type: 'bearer' })
-//             .end((err, res) => {
-//                 // res.should.have.status(405)
-//                 done()
-//             })
-//     })
-//     it("Modifier plusieurs utilisateurs avec des ids inexistants. -E", (done) => {
-//         chai.request(server).put('/users').query({ id: ['669f7f28cb2c096dea69b7b5', '66a8a9b72ade60f624c70d41'] }).send({
-//             username: "wategveerytdjBizgzegker",
 
-//         }).auth(token, { type: 'bearer' })
-//             .end((err, res) => {
-//                 res.should.have.status(404)
-//                 // console.log(err)
-//                 done()
-//             })
-//     })
-//     it("Modifier plusieurs utilisateurs avec un champ requis vide. -E", (done) => {
-//         chai.request(server).put('/users').query({ id: _.map(users, '_id') }).send({
-//             username: ""
-//         }).auth(token, { type: 'bearer' })
-//             .end((err, res) => {
-//                 res.should.have.status(405)
-//                 done()
-//             })
-//     })
-//     it("Modifier plusieurs utilisateurs avec un champ unique existant. -E", (done) => {
-//         chai.request(server).put('/users').query({ id: _.map(users, '_id') }).send({
-//             username: users[0].username
-//         }).auth(token, { type: 'bearer' })
-//             .end((err, res) => {
-//                 res.should.have.status(405)
-//                 done()
-//             })
-//     })
-//     it("Modifier plusieurs utilisateurs sans être authentifier. -E", (done) => {
-//         chai.request(server).put('/users').query({ id: _.map(users, '_id') }).send({
-//             firstName: "lucas"
-//         })
-//             .end((err, res) => {
-//                 res.should.have.status(401)
-//                 done()
-//             })
-//     })
-// })
+            alarme_vibration: false,
+
+
+        },
+
+
+
+        ).auth(token, { type: 'bearer' })
+            .end((err, res) => {
+                res.should.have.status(200)
+
+
+                done()
+            })
+    })
+    it("Modifier plusieurs utilisateurs avec des id invalide. -E", (done) => {
+        chai.request(server).put('/users').query({ id: ['234465465', '453564'] }).send({
+            email: "aurel.mosini@gmail.com",
+
+        }).auth(token, { type: 'bearer' })
+            .end((err, res) => {
+                res.should.have.status(405)
+                done()
+            })
+    })
+    it("Modifier plusieurs utilisateurs avec des ids inexistants. -E", (done) => {
+        chai.request(server).put('/users').query({ id: ['669f7f28cb2c096dea69b7b5', '66a8a9b72ade60f624c70d41'] }).send({
+            alarme_vibration: false,
+
+        }).auth(token, { type: 'bearer' })
+            .end((err, res) => {
+                res.should.have.status(404)
+                // console.log(err)
+                done()
+            })
+    })
+    it("Modifier plusieurs utilisateurs avec un champ requis vide. -E", (done) => {
+        chai.request(server).put('/users').query({ id: _.map(users, '_id') }).send({
+            password: ""
+        }).auth(token, { type: 'bearer' })
+            .end((err, res) => {
+                res.should.have.status(405)
+                done()
+            })
+    })
+    it("Modifier plusieurs utilisateurs avec un champ unique existant. -E", (done) => {
+        chai.request(server).put('/users').query({ id: _.map(users, '_id') }).send({
+            email: users[0].email
+        }).auth(token, { type: 'bearer' })
+            .end((err, res) => {
+                res.should.have.status(405)
+                done()
+            })
+    })
+    it("Modifier plusieurs utilisateurs sans être authentifier. -E", (done) => {
+        chai.request(server).put('/users').query({ id: _.map(users, '_id') }).send({
+            email: "aurel.mosinyti@gmail.com",
+        })
+            .end((err, res) => {
+                res.should.have.status(401)
+                done()
+            })
+    })
+})
 
 describe("DELETE - /users", () => {
 

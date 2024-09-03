@@ -2,86 +2,104 @@ const UserService = require("../services/UserService");
 const LoggerHttp = require('../utils/logger').http
 const passport = require('passport')
 
-/**
- * @swagger
- * /login:
- * post:
- * summary: Login user
- * description: Login user with the provided details.
- * tags: 
- * - Login
- * requestBody:
- * required: true
- * content:
- * application/json:
- * schema:
- * $ref: '#/components/schemas/Login'
- * responses:
- * 200:
- * description: Login successfully.
- * content:
- * application/json:
- * schema:
- * $ref: '#/components/schemas/User'
- * 404:
- * $ref: '#/components/responses/NotFound'
- * 405:
- * $ref: '#/components/responses/ValidationError'
- * 500:
- * description: Internal server error.
- */
+// /**
+//  * @swagger
+//  * /login:
+//  * post:
+//  * summary: Login user
+//  * description: Login user with the provided details.
+//  * tags: 
+//  * - Login
+//  * requestBody:
+//  * required: true
+//  * content:
+//  * application/json:
+//  * schema:
+//  * $ref: '#/components/schemas/Login'
+//  * responses:
+//  * 200:
+//  * description: Login successfully.
+//  * content:
+//  * application/json:
+//  * schema:
+//  * $ref: '#/components/schemas/User'
+//  * 404:
+//  * $ref: '#/components/responses/NotFound'
+//  * 405:
+//  * $ref: '#/components/responses/ValidationError'
+//  * 500:
+//  * description: Internal server error.
+//  */
 
 //La fonction pour gerer l'authentification depuis passport
 module.exports.loginUser = function (req, res, next) {
-    passport.authenticate('login', { badRequestMessage: "Les champs sont manquants." }, async function (err, user) {
-
-        if (err) {
-            res.statusCode = 401
-            return res.send({ msg: "Le nom d'utilisateur ou le mot de passe n'est pas correct", type_error: "no-valid-login" })
-        }
-        req.logIn(user, async function (err) {
-            if (err) {
-                res.statusCode = 500
-                return res.send({ msg: "Probleme d'authentification sur le serveur.", type_error: "internal" })
-            } else {
-                return res.send(user)
+    // console.log(req.body)
+    if (req.body.email == "" || req.body.password == "") {
+        res.statusCode = 405;
+        return res.send({
+            msg: "Tous les champs doivent étre remplis",
+            type_error: "no-valid-login",
+        });
+    } else {
+        passport.authenticate(
+            "login",
+            { badRequestMessage: "Les champs sont manquants." },
+            async function (err, user) {
+                if (err) {
+                    res.statusCode = 401;
+                    return res.send({
+                        msg: "Le nom d'utilisateur ou le mot de passe n'est pas correct",
+                        type_error: "no-valid-login",
+                    });
+                }
+                req.logIn(user, async function (err) {
+                    if (err) {
+                        res.statusCode = 500;
+                        return res.send({
+                            msg: "Probleme d'authentification sur le serveur.",
+                            type_error: "internal",
+                        });
+                    } else {
+                        return res.send(user);
+                    }
+                });
             }
-        })
-    })(req, res, next)
-}
+        )(req, res, next);
+    }
+};
 
-/**
- * @swagger
- * /user:
- * post:
- * summary: Create a new user
- * description: Create a new user with the provided details.
- * tags: 
- * - User
- * requestBody:
- * required: true
- * content:
- * application/json:
- * schema:
- * $ref: '#/components/schemas/User'
- * responses:
- * 201:
- * description: User created successfully.
- * content:
- * application/json:
- * type: object
- * schema:
- * $ref: '#/components/schemas/User'
- * 404:
- * $ref: '#/components/responses/NotFound'
- * 405:
- * $ref: '#/components/responses/ValidationError'
- * 500:
- * description: Internal server error.
- */
+// /**
+//  * @swagger
+//  * /user:
+//  * post:
+//  * summary: Create a new user
+//  * description: Create a new user with the provided details.
+//  * tags: 
+//  * - User
+//  * requestBody:
+//  * required: true
+//  * content:
+//  * application/json:
+//  * schema:
+//  * $ref: '#/components/schemas/User'
+//  * responses:
+//  * 201:
+//  * description: User created successfully.
+//  * content:
+//  * application/json:
+//  * type: object
+//  * schema:
+//  * $ref: '#/components/schemas/User'
+//  * 404:
+//  * $ref: '#/components/responses/NotFound'
+//  * 405:
+//  * $ref: '#/components/responses/ValidationError'
+//  * 500:
+//  * description: Internal server error.
+//  */
 
 //La fonction permet d'ajouter un user
-module.exports.AddOneUser = function (req, res) {
+module.exports.addOneUser = function (req, res) {
 
     req.log.info("Création d'un utilisateur");
     UserService.addOneUser(req.body, null, function (err, value) {
@@ -103,38 +121,38 @@ module.exports.AddOneUser = function (req, res) {
         }
     });
 };
-/**
- * @swagger
- * /users:
- * post:
- * summary: Create many users.
- * description: create many new users with the provided details.
- * tags:
- * -Users
- * requestBody:
- * required: true
- * content: 
- * application/json:
- * schema:
- * $ref: '#/components/schemas/User'
- * responses:
- * 201:
- * description: Users create succesfully
- * content:
- * application/json
- * schema:
- * $ref: '#/components/schemas/User'
- * 404:
- * $ref: '#/components/responses/NotFound'
- * 405:
- * $ref: '#/components/responses/ValidationEror'
- * 500:
- * description: Internal server error
- */
+// /**
+//  * @swagger
+//  * /users:
+//  * post:
+//  * summary: Create many users.
+//  * description: create many new users with the provided details.
+//  * tags:
+//  * -Users
+//  * requestBody:
+//  * required: true
+//  * content: 
+//  * application/json:
+//  * schema:
+//  * $ref: '#/components/schemas/User'
+//  * responses:
+//  * 201:
+//  * description: Users create succesfully
+//  * content:
+//  * application/json
+//  * schema:
+//  * $ref: '#/components/schemas/User'
+//  * 404:
+//  * $ref: '#/components/responses/NotFound'
+//  * 405:
+//  * $ref: '#/components/responses/ValidationEror'
+//  * 500:
+//  * description: Internal server error
+//  */
 
 
 // La fonction permet d'ajouter beaucoup d'user
-module.exports.AddManydUser = function (req, res) {
+module.exports.addManydUser = function (req, res) {
 
     req.log.info("Création de plusieurs utilisateurs");
     UserService.addManyUsers(req.body, null, function (err, value) {
@@ -148,56 +166,56 @@ module.exports.AddManydUser = function (req, res) {
     });
 };
 
-/**
- * @swagger
- * /user
- * get:
- * summary: find user
- * description: find user with provided details.
- * tags:
- * -User
- * security: 
- * -bearerAuth: []
- * parameters:
- * -name: fields
- * type: string
- * exemple: johnDoe
- * description: field to find user
- * required: true
- * requestBody:
- * required: true
- * content:
- * application/json:
- * schema:
- * $ref: '#components/schemas/User'
- * responses:
- * 200:
- * description: A list of user.
- * content:
- * application/json:
- * schema:
- * type: object
- * properties:
- * results:
- * type: array
- * items:
- * content:
- * application/json:
- * schema:
- * $ref: '#/components/schemas/User
- * count:
- * type: integer
- * description: The total number of user
- * example: 1
- * 404:
- * $ref: '#/components/responses/NotFound'
- * 405:
- * $ref: '#/components/responses/ValidationError
- * 500:
- * description: Internal server error
- * 
- *
- */
+// /**
+//  * @swagger
+//  * /user
+//  * get:
+//  * summary: find user
+//  * description: find user with provided details.
+//  * tags:
+//  * -User
+//  * security: 
+//  * -bearerAuth: []
+//  * parameters:
+//  * -name: fields
+//  * type: string
+//  * exemple: johnDoe
+//  * description: field to find user
+//  * required: true
+//  * requestBody:
+//  * required: true
+//  * content:
+//  * application/json:
+//  * schema:
+//  * $ref: '#components/schemas/User'
+//  * responses:
+//  * 200:
+//  * description: A list of user.
+//  * content:
+//  * application/json:
+//  * schema:
+//  * type: object
+//  * properties:
+//  * results:
+//  * type: array
+//  * items:
+//  * content:
+//  * application/json:
+//  * schema:
+//  * $ref: '#/components/schemas/User
+//  * count:
+//  * type: integer
+//  * description: The total number of user
+//  * example: 1
+//  * 404:
+//  * $ref: '#/components/responses/NotFound'
+//  * 405:
+//  * $ref: '#/components/responses/ValidationError
+//  * 500:
+//  * description: Internal server error
+//  * 
+//  *
+//  */
 module.exports.findOneUser = function (req, res) {
     req.log.info("Chercher un utilisateur")
     var fields = req.query.fields;
@@ -220,34 +238,34 @@ module.exports.findOneUser = function (req, res) {
     })
 }
 
-/**
- * @swagger
- * /userById
- * get:
- * summary: find one user by id
- * description: find one user with provided details.
- * tags:
- * -User
- * requestBody:
- * required: true
- * content:
- * application/json:
- * schema:
- * $ref:'#/components/schemas/User'
- * responses:
- * 200:
- * descritpion: find one user by id successfully.
- * content:
- * application/json:
- * schema:
- * $ref: '#/components/schemas/User'
- * 404:
- * $ref: '#/components/responses/NotFound'
- * 405:
- * $ref: '#/components/responses/ValidationError'
- * 500: 
- * description: Internal server error 
- */
+// /**
+//  * @swagger
+//  * /userById
+//  * get:
+//  * summary: find one user by id
+//  * description: find one user with provided details.
+//  * tags:
+//  * -User
+//  * requestBody:
+//  * required: true
+//  * content:
+//  * application/json:
+//  * schema:
+//  * $ref:'#/components/schemas/User'
+//  * responses:
+//  * 200:
+//  * descritpion: find one user by id successfully.
+//  * content:
+//  * application/json:
+//  * schema:
+//  * $ref: '#/components/schemas/User'
+//  * 404:
+//  * $ref: '#/components/responses/NotFound'
+//  * 405:
+//  * $ref: '#/components/responses/ValidationError'
+//  * 500: 
+//  * description: Internal server error 
+//  */
 
 //La fonction permet de trouver un utilisateur
 module.exports.findOneUserById = function (req, res) {
@@ -270,63 +288,63 @@ module.exports.findOneUserById = function (req, res) {
     });
 };
 
-/**
- * @swagger
- * /users_by_filters:
- * get:
- * summary: Get a list of users
- * description: Retrieve a paginated list of users with optional search query. This endpoint is protected by JWT.
- * tags:
- * - User
- * security:
- * - bearerAuth: []
- * parameters:
- * - name: page
- * in: query
- * description: The page number to retrieve
- * required: false
- * schema:
- * type: integer
- * example: 1
- * - name: pageSize
- * in: query
- * description: The number of users per page
- * required: false
- * schema:
- * type: integer
- * example: 10
- * - name: q
- * in: query
- * description: The search query to filter users
- * required: false
- * schema:
- * type: string
- * example: johndoe
- * responses:
- * 200:
- * description: A list of users.
- * content:
- * application/json:
- * schema:
- * type: object
- * properties:
- * results:
- * type: array
- * items:
- * $ref: '#/components/schemas/User'
- * count:
- * type: integer
- * description: The total number of users
- * example: 100
- * 404:
- * $ref: '#/components/responses/NotFound'
- * 405:
- * $ref: '#/components/responses/ValidationError'
- * 401:
- * description: Unauthorized. Invalid or missing token.
- * 500:
- * description: Internal server error.
- */
+// /**
+//  * @swagger
+//  * /users_by_filters:
+//  * get:
+//  * summary: Get a list of users
+//  * description: Retrieve a paginated list of users with optional search query. This endpoint is protected by JWT.
+//  * tags:
+//  * - User
+//  * security:
+//  * - bearerAuth: []
+//  * parameters:
+//  * - name: page
+//  * in: query
+//  * description: The page number to retrieve
+//  * required: false
+//  * schema:
+//  * type: integer
+//  * example: 1
+//  * - name: pageSize
+//  * in: query
+//  * description: The number of users per page
+//  * required: false
+//  * schema:
+//  * type: integer
+//  * example: 10
+//  * - name: q
+//  * in: query
+//  * description: The search query to filter users
+//  * required: false
+//  * schema:
+//  * type: string
+//  * example: johndoe
+//  * responses:
+//  * 200:
+//  * description: A list of users.
+//  * content:
+//  * application/json:
+//  * schema:
+//  * type: object
+//  * properties:
+//  * results:
+//  * type: array
+//  * items:
+//  * $ref: '#/components/schemas/User'
+//  * count:
+//  * type: integer
+//  * description: The total number of users
+//  * example: 100
+//  * 404:
+//  * $ref: '#/components/responses/NotFound'
+//  * 405:
+//  * $ref: '#/components/responses/ValidationError'
+//  * 401:
+//  * description: Unauthorized. Invalid or missing token.
+//  * 500:
+//  * description: Internal server error.
+//  */
 // La fonction permet de chercher plusieurs utilisateurs
 module.exports.findManyUsers = function (req, res) {
     req.log.info("Recherche de plusieurs utilisateurs")
@@ -351,7 +369,7 @@ module.exports.findManyUsers = function (req, res) {
 
 
 // La fonction permet de mettre à jour un utilisateur
-module.exports.UpdateOneUser = function (req, res) {
+module.exports.updateOneUser = function (req, res) {
 
     req.log.info("Modification d'un utilisateur");
     UserService.updateOneUser(req.params.id, req.body, null, function (err, value) {
@@ -367,13 +385,14 @@ module.exports.UpdateOneUser = function (req, res) {
     });
 };
 // La fonction permet de mettre à jour plusieurs utilisateurs
-module.exports.UpdateManyUser = function (req, res) {
+module.exports.updateManyUser = function (req, res) {
 
     req.log.info("Modification de plusieurs utilisateurs");
     var arg = req.query.id;
     if (arg && !Array.isArray(arg)) arg = [arg];
     var updateData = req.body;
     UserService.updateManyUsers(arg, updateData, null, function (err, value) {
+
         if (err && err.type_error === "no-found") {
             res.status(404).send(err);
         } else if (err && (err.type_error == "no-valid" || err.type_error == "validator" || err.type_error === "duplicate")) {
@@ -382,12 +401,13 @@ module.exports.UpdateManyUser = function (req, res) {
             res.status(500).send(err);
         } else {
             res.status(200).send(value);
+
         }
     });
 };
 
 //La fonction permet de supprimer un user
-module.exports.DeleteOneUser = function (req, res) {
+module.exports.deleteOneUser = function (req, res) {
 
     req.log.info("Suppression d'un utilisateur");
     UserService.deleteOneUser(req.params.id, null, function (err, value) {

@@ -1,12 +1,7 @@
 const mongoose = require("mongoose");
 
 var UserSchema = mongoose.Schema({
-    username: {
-        type: String,
-        index: true,
-        unique: true,
-        required: true,
-    },
+
     email: {
         type: String,
         index: true,
@@ -17,37 +12,41 @@ var UserSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    personnel: {
-        compte: {
-            type: String,
-            unique: true,
-            required: true,
-        },
-        consentement: {
-            type: Boolean,
-            default: false
-        }
+    personnel_consentement: {
+
+
+        type: Boolean,
+        default: false
+
     },
-    alarme: {
-        vibration: {
-            type: Boolean,
-            default: false
-        }
+    alarme_vibration: {
+
+        type: Boolean,
+        default: false
+
+    },
+    alarme_microphone: {
+        type: Boolean,
+        default: false
+
     },
 
-    conseil: {
-        image: {
-            type: String,
-            match: /^https?:\/\/.+\.(jpg|jpeg|png|gif)$/
-        },
-        texte: {
-            type: String,
 
-        },
-        statut: {
-            type: Boolean,
-            default: false
-        }
+    conseil_statut: {
+
+
+        type: Boolean,
+        default: false
+
+    },
+    created_at: {
+        type: Date,
+        default: new Date()
+    },
+    updated_at: {
+        type: Date,
+        default: new Date()
+
     },
 
     token: {

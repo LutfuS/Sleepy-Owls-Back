@@ -22,7 +22,7 @@ var RappelSchema = mongoose.Schema({
     },
     frequence: {
         type: Number,
-        required: true
+        default: false
     },
     statut: {
         type: String,

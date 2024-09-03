@@ -6,6 +6,7 @@ const Config = require("./config");
 const Logger = require("./utils/logger").pino;
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const cors = require('cors')
 
 // Configuration Swagger
 const swaggerOptions = require('./swagger.json');
@@ -15,6 +16,8 @@ const swaggerDocs = swaggerJsdoc(swaggerOptions);
 //   swaggerUi.setup(swaggerDocs));
 //Création de notre application express.js
 const app = express();
+
+app.use(cors())
 //Déclaration du middlewares à express
 
 app.use(bodyParser.json());
@@ -54,9 +57,9 @@ app.post('/login', DataBaseMiddleWare.CheckConnexion, UserController.loginUser)
 
 
 //Création endpoint/ user pour l'ajout d'un utilisateur
-app.post("/user", DataBaseMiddleWare.CheckConnexion, UserController.AddOneUser);
+app.post("/user", DataBaseMiddleWare.CheckConnexion, UserController.addOneUser);
 
-app.post("/users", DataBaseMiddleWare.CheckConnexion, UserController.AddManydUser);
+app.post("/users", DataBaseMiddleWare.CheckConnexion, UserController.addManydUser);
 
 app.get("/user/:id", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), UserController.findOneUserById);
 
@@ -65,11 +68,11 @@ app.get("/user/:id", DataBaseMiddleWare.CheckConnexion, passport.authenticate('j
 // Création du endpoint /users_by_filters pour la récupération de plusieurs utilisateurs
 app.get('/users_by_filters', DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), UserController.findManyUsers)
 
-app.put("/user/:id", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), UserController.UpdateOneUser);
+app.put("/user/:id", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), UserController.updateOneUser);
 
-app.put("/users", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), UserController.UpdateManyUser);
+app.put("/users", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), UserController.updateManyUser);
 
-app.delete("/user/:id", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), UserController.DeleteOneUser);
+app.delete("/user/:id", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), UserController.deleteOneUser);
 
 app.delete("/users", DataBaseMiddleWare.CheckConnexion, passport.authenticate('jwt', { session: false }), UserController.deleteManyUsers);
 

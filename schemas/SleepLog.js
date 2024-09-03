@@ -17,7 +17,7 @@ var SleepLogSchema = mongoose.Schema({
     },
     sleepDuration: {
         type: Date,
-        required: true,
+        default: false,
 
     },
 
@@ -47,7 +47,7 @@ var SleepLogSchema = mongoose.Schema({
     },
     note: {
         type: String,
-        required: true,
+        default: false,
     },
     rating: {
         type: Number,

@@ -18,9 +18,21 @@ const note = faker.helpers.arrayElement(["Je suis parti dormir tard hier", "J'ai
 const rating = faker.number.int({ min: 1, max: 5 })
 
 
+
+const sounds = {
+    'Ronflement': 'public\son\man_breathing_asleep-75120.mp3',
+    'Somniloquie': 'public\son\sleep-talking-wav-68027.mp3',
+    'Chuchotement': 'public\son\shushing-150148.mp3',
+    'Reveil': 'public\son\man-waking-up-from-sleep-6338.mp3',
+    'Respirations': 'public\son\man_breathing_asleep-75120.mp3'
+}
+
+const soundKey = faker.helpers.arrayElement(Object.keys(sounds))
+const sleepSound = sounds[soundKey]
+
 let fictifData = [
     {
-        username: "MichelTrogneux",
+
         logDate,
         note,
         rating,
@@ -28,11 +40,11 @@ let fictifData = [
         sleepEnd,
         sleepDuration,
         sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-        sleepSound: faker.helpers.arrayElement(['snore in sleep', 'talk in sleep', 'move in sleep', 'wake up in the night']),
+        sleepSound,
         user_id: rdm_user(tab_id_users)
     },
     {
-        username: "ligones",
+
         logDate,
         note,
         rating,
@@ -40,11 +52,11 @@ let fictifData = [
         sleepEnd,
         sleepDuration,
         sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-        sleepSound: faker.helpers.arrayElement(['snore in sleep', 'talk in sleep', 'move in sleep', 'wake up in the night']),
+        sleepSound,
         user_id: rdm_user(tab_id_users)
     },
     {
-        username: "Xavier",
+
         logDate,
         note,
         rating,
@@ -52,7 +64,7 @@ let fictifData = [
         sleepEnd,
         sleepDuration,
         sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-        sleepSound: faker.helpers.arrayElement(['snore in sleep', 'talk in sleep', 'move in sleep', 'wake up in the night']),
+        sleepSound,
         user_id: rdm_user(tab_id_users)
     }
 ];
@@ -67,74 +79,34 @@ it("GenerateData", (done) => {
 let users = [
     {
         email: "edurhrebard.duponsgeverg@gmail.com",
-        username: "edupebhrgsztrot",
         password: "fggsdqge",
-        personnel: {
-            compte: "ze7qregh0",
-            consentement: true
-        },
-        alarme: {
-            vibration: true
-        },
-        conseil: {
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-            texte: "SUUUUUUUU",
-            statut: true
-        }
+        personnel_consentement: true,
+        alarme_vibration: true,
+        conseil_statut: true
 
     },
 
     {
         email: "edshherhbsfuard.dupont@gmail.com",
-        username: "eduqehbreresgdfgot",
         password: "fggsdqge",
-        personnel: {
-            compte: "zeqehgb71",
-            consentement: true
-        },
-        alarme: {
-            vibration: true
-        },
-        conseil: {
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-            texte: "SUUUUUUUU",
-            statut: true
-        }
+        personnel_consentement: true,
+        alarme_vibration: true,
+        conseil_statut: true
     },
     {
         email: "eduauhrebdftrshrd.dupont@gmail.com",
-        username: "eduthsrebdpshthrot",
         password: "fggsdqge",
-        personnel: {
-            compte: "zeherbdf73",
-            consentement: true
-        },
-        alarme: {
-            vibration: true
-        },
-        conseil: {
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-            texte: "SUUUUUUUU",
-            statut: true
-        }
+        personnel_consentement: true,
+        alarme_vibration: true,
+        conseil_statut: true
     },
 
     {
         email: "eduayglhebfdheerd.dupont@gmail.com",
-        username: "edew(hrebdgrresupot",
         password: "fggsdqge",
-        personnel: {
-            compte: "zshee75",
-            consentement: true
-        },
-        alarme: {
-            vibration: true
-        },
-        conseil: {
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-            texte: "SUUUUUUUU",
-            statut: true
-        }
+        personnel_consentement: true,
+        alarme_vibration: true,
+        conseil_statut: true
     }
 ]
 
@@ -159,6 +131,7 @@ describe("CreateOneSleepLog", () => {
     const sleepDuration = faker.number.int({ min: 4, max: 15 }) * 3600000;
     const sleepStart = faker.defaultRefDate(30);
     const sleepEnd = new Date(sleepStart.getTime() + sleepDuration);
+    const sleepSound = sounds[soundKey]
     it("SleepLog correct. - S", (done) => {
 
         var sleepLog = {
@@ -172,7 +145,7 @@ describe("CreateOneSleepLog", () => {
             sleepEnd,
             sleepDuration,
             sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-            sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
+            sleepSound,
 
         }
 
@@ -195,6 +168,7 @@ describe("CreateOneSleepLog", () => {
         const sleepDuration = faker.number.int({ min: 4, max: 15 }) * 3600000;
         const sleepStart = faker.defaultRefDate(30);
         const sleepEnd = new Date(sleepStart.getTime() + sleepDuration);
+        const sleepSound = sounds[soundKey]
         var sleepLog_no_valid = {
 
 
@@ -206,7 +180,7 @@ describe("CreateOneSleepLog", () => {
             sleepEnd,
             sleepDuration,
             sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-            sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
+            sleepSound,
 
         }
         SleepLogService.createOneSleepLog(sleepLog_no_valid, null, function (err, value) {
@@ -233,6 +207,7 @@ describe("CreateManySleepLogs", () => {
         const sleepDuration = faker.number.int({ min: 4, max: 15 }) * 3600000;
         const sleepStart = faker.defaultRefDate(30);
         const sleepEnd = new Date(sleepStart.getTime() + sleepDuration);
+        const sleepSound = sounds[soundKey]
         var sleepLog_tab = [{
             user_id: rdm_user(tab_id_users),
             logDate,
@@ -242,7 +217,7 @@ describe("CreateManySleepLogs", () => {
             sleepEnd,
             sleepDuration,
             sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-            sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
+            sleepSound,
         },
 
 
@@ -255,7 +230,7 @@ describe("CreateManySleepLogs", () => {
             sleepEnd,
             sleepDuration,
             sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-            sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
+            sleepSound,
         },
         {
             user_id: rdm_user(tab_id_users),
@@ -266,7 +241,7 @@ describe("CreateManySleepLogs", () => {
             sleepEnd,
             sleepDuration,
             sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-            sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
+            sleepSound,
         },
         {
             user_id: rdm_user(tab_id_users),
@@ -277,7 +252,7 @@ describe("CreateManySleepLogs", () => {
             sleepEnd,
             sleepDuration,
             sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-            sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
+            sleepSound,
         },
         ]
 
@@ -293,6 +268,7 @@ describe("CreateManySleepLogs", () => {
         const logDate = faker.defaultRefDate(30);
         const note = faker.helpers.arrayElement(["Je suis parti dormir tard hier", "J'ai eu du mal à m'endormir", "J'ai eu une bonne nuit de sommeil", "J'ai eu plusieurs paralysie du sommeil cette nuit"])
         const rating = faker.number.int({ min: 1, max: 5 })
+        const sleepSound = sounds[soundKey]
         var sleepLogs_tab_error = [{
             user_id: rdm_user(tab_id_users),
             logDate,
@@ -302,7 +278,7 @@ describe("CreateManySleepLogs", () => {
             sleepEnd,
             sleepDuration,
             sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-            sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
+            sleepSound,
 
         },
 
@@ -316,7 +292,7 @@ describe("CreateManySleepLogs", () => {
             sleepEnd,
             sleepDuration,
             sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-            sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night']),
+            sleepSound,
         },
         {
             user_id: rdm_user(tab_id_users),
@@ -327,7 +303,7 @@ describe("CreateManySleepLogs", () => {
             sleepEnd,
             sleepDuration,
             sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-            sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
+            sleepSound,
         },
         {
             user_id: rdm_user(tab_id_users),
@@ -338,7 +314,7 @@ describe("CreateManySleepLogs", () => {
             sleepEnd,
             sleepDuration,
             sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-            sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
+            sleepSound,
         }]
 
         SleepLogService.createManySleepLogs(sleepLogs_tab_error, null, function (err, value) {
@@ -477,13 +453,14 @@ describe("updateOneSleepLog", () => {
         })
     })
     it("Modifier un sleepLog avec des champs requis vide. - E", (done) => {
-        SleepLogService.updateOneSleepLog(id_sleepLog_valid, { note: "" }, null, function (err, value) {
+        SleepLogService.updateOneSleepLog(id_sleepLog_valid, { sleepQuality: "" }, null, function (err, value) {
             expect(value).to.be.undefined
             expect(err).to.haveOwnProperty('msg')
             expect(err).to.haveOwnProperty('fields_with_error').with.lengthOf(1)
             expect(err).to.haveOwnProperty('fields')
-            expect(err['fields']).to.haveOwnProperty('note')
-            expect(err['fields']['note']).to.equal('Path `note` is required.')
+            expect(err['fields']).to.haveOwnProperty('sleepQuality')
+            expect(err['fields']['sleepQuality']).to.equal('Path `sleepQuality` is required.')
+            // console.log(err, value)
             done()
         })
     })
@@ -510,13 +487,13 @@ describe("updateManySleepLogs", () => {
         })
     })
     it("Modifier plusieurs sleepLogs avec des champs requis vide. - E", (done) => {
-        SleepLogService.updateManySleepLogs(tab_id_sleepLogs, { note: "" }, null, function (err, value) {
+        SleepLogService.updateManySleepLogs(tab_id_sleepLogs, { sleepQuality: "" }, null, function (err, value) {
             expect(value).to.be.undefined
             expect(err).to.haveOwnProperty('msg')
             expect(err).to.haveOwnProperty('fields_with_error').with.lengthOf(1)
             expect(err).to.haveOwnProperty('fields')
-            expect(err['fields']).to.haveOwnProperty('note')
-            expect(err['fields']['note']).to.equal('Path `note` is required.')
+            expect(err['fields']).to.haveOwnProperty('sleepQuality')
+            expect(err['fields']['sleepQuality']).to.equal('Path `sleepQuality` is required.')
             done()
         })
     })

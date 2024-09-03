@@ -9,10 +9,22 @@ var id_rappel_valid = ""
 var tab_id_rappels = []
 var tab_id_users = []
 var rappels = []
-var tab_id_fictifData = []
+
 const sleepDuration = faker.number.int({ min: 4, max: 15 }) * 3600000;
 const sleepStart = faker.defaultRefDate(30);
 const sleepEnd = new Date(sleepStart.getTime() + sleepDuration);
+
+const sounds = {
+    'Ronflement': 'public\son\man_breathing_asleep-75120.mp3',
+    'Somniloquie': 'public\son\sleep-talking-wav-68027.mp3',
+    'Chuchotement': 'public\son\shushing-150148.mp3',
+    'Reveil': 'public\son\man-waking-up-from-sleep-6338.mp3',
+    'Respirations': 'public\son\man_breathing_asleep-75120.mp3'
+}
+
+const soundKey = faker.helpers.arrayElement(Object.keys(sounds))
+const sleepSound = sounds[soundKey]
+var tab_id_fictifData = []
 
 
 let fictifData = [
@@ -23,7 +35,7 @@ let fictifData = [
         sleepEnd,
         sleepDuration,
         sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-        sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night']),
+        sleepSound,
         user_id: rdm_user(tab_id_users)
     },
     {
@@ -32,7 +44,7 @@ let fictifData = [
         sleepEnd,
         sleepDuration,
         sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-        sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night']),
+        sleepSound,
         user_id: rdm_user(tab_id_users)
     },
     {
@@ -41,7 +53,7 @@ let fictifData = [
         sleepEnd,
         sleepDuration,
         sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-        sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night']),
+        sleepSound,
         user_id: rdm_user(tab_id_users)
     },
 ]
@@ -57,74 +69,34 @@ it("GenerateData", (done => {
 let users = [
     {
         email: "eduard.duponsgeverg@gmail.com",
-        username: "edupgsztrot",
         password: "fggsdqge",
-        personnel: {
-            compte: "ze70",
-            consentement: true
-        },
-        alarme: {
-            vibration: true
-        },
-        conseil: {
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-            texte: "SUUUUUUUU",
-            statut: true
-        }
+        personnel_consentement: true,
+        alarme_vibration: true,
+        conseil_statut: true,
 
     },
 
     {
         email: "edshfuard.dupont@gmail.com",
-        username: "eduresgdfgot",
         password: "fggsdqge",
-        personnel: {
-            compte: "ze71",
-            consentement: true
-        },
-        alarme: {
-            vibration: true
-        },
-        conseil: {
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-            texte: "SUUUUUUUU",
-            statut: true
-        }
+        personnel_consentement: true,
+        alarme_vibration: true,
+        conseil_statut: true
     },
     {
         email: "eduauhtrshrd.dupont@gmail.com",
-        username: "edupshthrot",
         password: "fggsdqge",
-        personnel: {
-            compte: "ze73",
-            consentement: true
-        },
-        alarme: {
-            vibration: true
-        },
-        conseil: {
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-            texte: "SUUUUUUUU",
-            statut: true
-        }
+        personnel_consentement: true,
+        alarme_vibration: true,
+        conseil_statut: true
     },
 
     {
         email: "eduayglheerd.dupont@gmail.com",
-        username: "edewdgrresupot",
         password: "fggsdqge",
-        personnel: {
-            compte: "ze75",
-            consentement: true
-        },
-        alarme: {
-            vibration: true
-        },
-        conseil: {
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-            texte: "SUUUUUUUU",
-            statut: true
-        }
+        personnel_consentement: true,
+        alarme_vibration: true,
+        conseil_statut: true
     }
 ]
 

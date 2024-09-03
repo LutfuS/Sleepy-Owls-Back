@@ -21,79 +21,57 @@ const rating = faker.number.int({ min: 1, max: 5 })
 const sleepDuration = faker.number.int({ min: 4, max: 15 }) * 3600000;
 const sleepStart = faker.defaultRefDate(30);
 const sleepEnd = new Date(sleepStart.getTime() + sleepDuration);
+
+
+
+const sounds = {
+    'Ronflement': 'public\son\man_breathing_asleep-75120.mp3',
+    'Somniloquie': 'public\son\sleep-talking-wav-68027.mp3',
+    'Chuchotement': 'public\son\shushing-150148.mp3',
+    'Reveil': 'public\son\man-waking-up-from-sleep-6338.mp3',
+    'Respirations': 'public\son\man_breathing_asleep-75120.mp3'
+}
+
+const soundKey = faker.helpers.arrayElement(Object.keys(sounds))
+const sleepSound = sounds[soundKey]
+
 let users = [
     {
-        username: "johreenn",
+
         password: "fggsdqge",
         email: "johrbfnun.us@gmail.com",
-        personnel: {
-            compte: "zertf2784459",
-            consentement: true
-        },
-        alarme: {
-            vibration: true
-        },
-        conseil: {
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-            texte: "SUUUUUUUU",
-            statut: true
-        }
+        personnel_consentement: true,
+        alarme_vibration: true,
+        conseil_statut: true
     },
 
     {
-        username: "joerbedwcthn",
+
         password: "fggsrfvdqge",
         email: "johnuzctztc.us@gmail.com",
-        personnel: {
-            compte: "zgzsrbfvecre10",
-            consentement: true
-        },
-        alarme: {
-            vibration: true
-        },
-        conseil: {
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-            texte: "SUUUUUUUU",
-            statut: true
-        }
+        personnel_consentement: true,
+        alarme_vibration: true,
+        conseil_statut: true
+
 
     },
     {
-        username: "jozgz'regfvdcgzghn",
+
         password: "fggsdqge",
         email: "johnutggrqesdvzct.us@gmail.com",
-        personnel: {
-            compte: "zegtcregfdvg10",
-            consentement: true
-        },
-        alarme: {
-            vibration: true
-        },
-        conseil: {
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-            texte: "SUUUUUUUU",
-            statut: true
-        }
+        personnel_consentement: true,
+        alarme_vibration: true,
+        conseil_statut: true,
 
     },
 
     {
-        username: "jothfrgfvded(ghn",
+
         password: "fggsgredvdqge",
         email: "johngrdvu.us@gmail.com",
-        personnel: {
-            compte: "ze1ha'ezrt0",
-            consentement: true
-        },
-        alarme: {
-            vibration: true
-        },
-        conseil: {
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-            texte: "SUUUUUUUU",
-            statut: true
-        }
-
+        personnel_consentement: true,
+        alarme_vibration: true,
+        conseil_statut: true
     }
 ]
 
@@ -112,7 +90,7 @@ function rdm_user(tab) {
 
 let fictifData = [
     {
-        username: "MichelTrogneux",
+
         logDate,
         note,
         rating,
@@ -120,11 +98,11 @@ let fictifData = [
         sleepEnd,
         sleepDuration,
         sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-        sleepSound: faker.helpers.arrayElement(['snore in sleep', 'talk in sleep', 'move in sleep', 'wake up in the night']),
+        sleepSound,
         user_id: rdm_user(tab_id_users)
     },
     {
-        username: "ligones",
+
         logDate,
         note,
         rating,
@@ -132,11 +110,11 @@ let fictifData = [
         sleepEnd,
         sleepDuration,
         sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-        sleepSound: faker.helpers.arrayElement(['snore in sleep', 'talk in sleep', 'move in sleep', 'wake up in the night']),
+        sleepSound,
         user_id: rdm_user(tab_id_users)
     },
     {
-        username: "Xavier",
+
         logDate,
         note,
         rating,
@@ -144,7 +122,7 @@ let fictifData = [
         sleepEnd,
         sleepDuration,
         sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-        sleepSound: faker.helpers.arrayElement(['snore in sleep', 'talk in sleep', 'move in sleep', 'wake up in the night']),
+        sleepSound,
         user_id: rdm_user(tab_id_users)
     }
 ];
@@ -159,21 +137,12 @@ it("GenerateData", (done) => {
 describe("POST -/login", () => {
     it("Authentifier un utilisateur correctement. -S", (done) => {
         chai.request(server).post('/login').send({
-            username: "johreenn",
+
             password: "fggsdqge",
             email: "johrbfnun.us@gmail.com",
-            personnel: {
-                compte: "zertf2784459",
-                consentement: true
-            },
-            alarme: {
-                vibration: true
-            },
-            conseil: {
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                texte: "SUUUUUUUU",
-                statut: true
-            }
+            personnel_consentement: true,
+            alarme_vibration: true,
+            conseil_statut: true
 
 
 
@@ -185,44 +154,26 @@ describe("POST -/login", () => {
     })
     it("Authentifier un utilisateur incorrect. -E(avec password incorrect)", (done) => {
         chai.request(server).post('/login').send({
-            username: "john",
+
             password: "fggsdq<hrge",
             email: "johnds<vu.uszsvqsvs@gmail.com",
-            personnel: {
-                compte: "ze10",
-                consentement: true
-            },
-            alarme: {
-                vibration: true
-            },
-            conseil: {
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                texte: "SUUUUUUUU",
-                statut: true
-            }
+            personnel_consentement: true,
+            alarme_vibration: true,
+            conseil_statut: true
 
         }).end((err, res) => {
             res.should.have.status(401)
             done()
         })
     })
-    it("Authentifier un utilisateur incorrect. -E(avec username incorrect)", (done) => {
+    it("Authentifier un utilisateur incorrect. -E(avec password incorrect)", (done) => {
         chai.request(server).post('/login').send({
-            username: "johsvsvreenn",
-            password: "fggsdqge",
+
+            password: "fggsfdzsddqge",
             email: "johrbfnun.us@gmail.com",
-            personnel: {
-                compte: "zertf2784459",
-                consentement: true
-            },
-            alarme: {
-                vibration: true
-            },
-            conseil: {
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                texte: "SUUUUUUUU",
-                statut: true
-            }
+            personnel_consentement: true,
+            alarme_vibration: true,
+            conseil_statut: true
 
 
         }).end((err, res) => {
@@ -249,6 +200,7 @@ describe("POST - /sleepLog", () => {
         const sleepDuration = faker.number.int({ min: 4, max: 15 }) * 3600000;
         const sleepStart = faker.defaultRefDate(30);
         const sleepEnd = new Date(sleepStart.getTime() + sleepDuration);
+        const sleepSound = sounds[soundKey]
         chai.request(server).post('/sleepLog')
 
             .auth(token, { type: 'bearer' })
@@ -261,7 +213,7 @@ describe("POST - /sleepLog", () => {
                 sleepEnd,
                 sleepDuration,
                 sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-                sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
+                sleepSound,
 
             })
             .end((err, res) => {
@@ -279,6 +231,7 @@ describe("POST - /sleepLog", () => {
         const sleepDuration = faker.number.int({ min: 4, max: 15 }) * 3600000;
         const sleepStart = faker.defaultRefDate(30);
         const sleepEnd = new Date(sleepStart.getTime() + sleepDuration);
+        const sleepSound = sounds[soundKey]
         chai.request(server).post('/sleepLog')
 
             .auth(token, { type: 'bearer' })
@@ -292,7 +245,7 @@ describe("POST - /sleepLog", () => {
                 sleepEnd,
                 sleepDuration,
                 sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-                sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
+                sleepSound,
 
 
 
@@ -309,6 +262,7 @@ describe("POST - /sleepLog", () => {
         const sleepDuration = faker.number.int({ min: 4, max: 15 }) * 3600000;
         const sleepStart = faker.defaultRefDate(30);
         const sleepEnd = new Date(sleepStart.getTime() + sleepDuration);
+        const sleepSound = sounds[soundKey]
 
         chai.request(server).post('/sleepLog')
 
@@ -322,7 +276,7 @@ describe("POST - /sleepLog", () => {
                 sleepEnd,
                 sleepDuration,
                 sleepQuality: faker.helpers.arrayElement(['']),
-                sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
+                sleepSound,
 
             }).end((err, res) => {
                 expect(res).to.have.status(405)
@@ -336,6 +290,7 @@ describe("POST - /sleepLog", () => {
         const sleepDuration = faker.number.int({ min: 4, max: 15 }) * 3600000;
         const sleepStart = faker.defaultRefDate(30);
         const sleepEnd = new Date(sleepStart.getTime() + sleepDuration)
+        const sleepSound = sounds[soundKey]
         chai.request(server).post('/sleepLog')
 
 
@@ -348,7 +303,7 @@ describe("POST - /sleepLog", () => {
                 sleepEnd,
                 sleepDuration,
                 sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-                sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
+                sleepSound,
             }).end((err, res) => {
                 expect(res).to.have.status(401)
                 done()
@@ -367,6 +322,7 @@ describe("POST - /sleepLogs", () => {
         const sleepDuration = faker.number.int({ min: 4, max: 15 }) * 3600000;
         const sleepStart = faker.defaultRefDate(30);
         const sleepEnd = new Date(sleepStart.getTime() + sleepDuration)
+        const sleepSound = sounds[soundKey]
         chai.request(server).post('/sleepLogs')
 
             .auth(token, { type: 'bearer' })
@@ -380,7 +336,7 @@ describe("POST - /sleepLogs", () => {
                     sleepEnd,
                     sleepDuration,
                     sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-                    sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
+                    sleepSound,
 
                 },
                 {
@@ -392,8 +348,7 @@ describe("POST - /sleepLogs", () => {
                     sleepEnd,
                     sleepDuration,
                     sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-                    sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
-
+                    sleepSound,
 
                 }
             ]).end((err, res) => {
@@ -410,6 +365,7 @@ describe("POST - /sleepLogs", () => {
         const sleepDuration = faker.number.int({ min: 4, max: 15 }) * 3600000;
         const sleepStart = faker.defaultRefDate(30);
         const sleepEnd = new Date(sleepStart.getTime() + sleepDuration)
+        const sleepSound = sounds[soundKey]
         chai.request(server).post('/sleepLogs')
 
             .auth(token, { type: 'bearer' })
@@ -424,7 +380,7 @@ describe("POST - /sleepLogs", () => {
                     sleepEnd,
                     sleepDuration,
                     sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-                    sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
+                    sleepSound,
 
                 },
                 {
@@ -439,7 +395,7 @@ describe("POST - /sleepLogs", () => {
                     sleepEnd,
                     sleepDuration,
                     sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-                    sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
+                    sleepSound,
 
                 }
             ]).end((err, res) => {
@@ -455,6 +411,7 @@ describe("POST - /sleepLogs", () => {
         const sleepDuration = faker.number.int({ min: 4, max: 15 }) * 3600000;
         const sleepStart = faker.defaultRefDate(30);
         const sleepEnd = new Date(sleepStart.getTime() + sleepDuration)
+        const sleepSound = sounds[soundKey]
         chai.request(server).post('/sleepLogs')
 
             .auth(token, { type: 'bearer' })
@@ -468,7 +425,7 @@ describe("POST - /sleepLogs", () => {
                     sleepEnd,
                     sleepDuration,
                     sleepQuality: faker.helpers.arrayElement(['']),
-                    sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
+                    sleepSound,
 
 
                 },
@@ -481,8 +438,7 @@ describe("POST - /sleepLogs", () => {
                     sleepEnd,
                     sleepDuration,
                     sleepQuality: faker.helpers.arrayElement(['']),
-                    sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
-
+                    sleepSound,
                 }
             ]).end((err, res) => {
                 expect(res).to.have.status(405)
@@ -496,6 +452,7 @@ describe("POST - /sleepLogs", () => {
         const sleepDuration = faker.number.int({ min: 4, max: 15 }) * 3600000;
         const sleepStart = faker.defaultRefDate(30);
         const sleepEnd = new Date(sleepStart.getTime() + sleepDuration)
+        const sleepSound = sounds[soundKey]
         chai.request(server).post('/sleepLog')
 
 
@@ -508,7 +465,7 @@ describe("POST - /sleepLogs", () => {
                 sleepEnd,
                 sleepDuration,
                 sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-                sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
+                sleepSound,
 
             }
             ]
@@ -715,6 +672,7 @@ describe("PUT - /sleepLog", () => {
         const sleepDuration = faker.number.int({ min: 4, max: 15 }) * 3600000;
         const sleepStart = faker.defaultRefDate(30);
         const sleepEnd = new Date(sleepStart.getTime() + sleepDuration);
+        const sleepSound = sounds[soundKey]
         chai.request(server).put('/sleepLog/' + sleepLogs[0]._id)
             .auth(token, { type: 'bearer' })
             .send({
@@ -726,7 +684,7 @@ describe("PUT - /sleepLog", () => {
                 sleepEnd,
                 sleepDuration,
                 sleepQuality: faker.helpers.arrayElement(['Podor', 'Average', 'Good', 'Excellent']),
-                sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
+                sleepSound,
 
             })
             .end((err, res) => {
@@ -742,6 +700,7 @@ describe("PUT - /sleepLog", () => {
         const sleepDuration = faker.number.int({ min: 4, max: 15 }) * 3600000;
         const sleepStart = faker.defaultRefDate(30);
         const sleepEnd = new Date(sleepStart.getTime() + sleepDuration);
+        const sleepSound = sounds[soundKey]
         chai.request(server).put('/sleepLog/1654645').auth(token, { type: 'bearer' })
             .send({
                 user_id: rdm_user(tab_id_users),
@@ -752,8 +711,7 @@ describe("PUT - /sleepLog", () => {
                 sleepEnd,
                 sleepDuration,
                 sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-                sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
-
+                sleepSound,
             })
             .end((err, res) => {
                 res.should.have.status(405);
@@ -767,6 +725,7 @@ describe("PUT - /sleepLog", () => {
         const sleepDuration = faker.number.int({ min: 4, max: 15 }) * 3600000;
         const sleepStart = faker.defaultRefDate(30);
         const sleepEnd = new Date(sleepStart.getTime() + sleepDuration);
+        const sleepSound = sounds[soundKey]
         chai.request(server).put('/sleepLog/66791cb82c6b5e01b4c1efd3').auth(token, { type: 'bearer' })
             .send({
                 user_id: rdm_user(tab_id_users),
@@ -777,7 +736,7 @@ describe("PUT - /sleepLog", () => {
                 sleepEnd,
                 sleepDuration,
                 sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-                sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
+                sleepSound,
 
             })
             .end((err, res) => {
@@ -792,6 +751,7 @@ describe("PUT - /sleepLog", () => {
         const sleepDuration = faker.number.int({ min: 4, max: 15 }) * 3600000;
         const sleepStart = faker.defaultRefDate(30);
         const sleepEnd = new Date(sleepStart.getTime() + sleepDuration);
+        const sleepSound = sounds[soundKey]
         chai.request(server).put('/sleepLog/' + sleepLogs[0]._id)
             .auth(token, { type: 'bearer' })
             .send({
@@ -802,8 +762,8 @@ describe("PUT - /sleepLog", () => {
                 sleepStart,
                 sleepEnd,
                 sleepDuration,
-                sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-                sleepSound: faker.helpers.arrayElement([''])
+                sleepQuality: faker.helpers.arrayElement(['']),
+                sleepSound,
             })
             .end((err, res) => {
                 res.should.have.status(405);
@@ -817,6 +777,7 @@ describe("PUT - /sleepLog", () => {
         const sleepDuration = faker.number.int({ min: 4, max: 15 }) * 3600000;
         const sleepStart = faker.defaultRefDate(30);
         const sleepEnd = new Date(sleepStart.getTime() + sleepDuration);
+        const sleepSound = sounds[soundKey]
         chai.request(server).put('/sleepLog/' + sleepLogs[0]._id)
             .send({
                 user_id: rdm_user(tab_id_users),
@@ -827,7 +788,7 @@ describe("PUT - /sleepLog", () => {
                 sleepEnd,
                 sleepDuration,
                 sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-                sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
+                sleepSound,
 
             })
             .end((err, res) => {
@@ -845,6 +806,7 @@ describe("PUT -/sleepLogs", () => {
         const sleepDuration = faker.number.int({ min: 4, max: 15 }) * 3600000;
         const sleepStart = faker.defaultRefDate(30);
         const sleepEnd = new Date(sleepStart.getTime() + sleepDuration);
+        const sleepSound = sounds[soundKey]
         chai.request(server).put('/sleepLogs')
             .auth(token, { type: 'bearer' })
             .query({ id: _.map(sleepLogs, '_id') })
@@ -857,7 +819,7 @@ describe("PUT -/sleepLogs", () => {
                 sleepEnd,
                 sleepDuration,
                 sleepQuality: faker.helpers.arrayElement(['Pokor', 'Average', 'Good', 'Excellent']),
-                sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
+                sleepSound,
             }).end((err, res) => {
                 res.should.have.status(200)
                 done()
@@ -870,6 +832,7 @@ describe("PUT -/sleepLogs", () => {
         const sleepDuration = faker.number.int({ min: 4, max: 15 }) * 3600000;
         const sleepStart = faker.defaultRefDate(30);
         const sleepEnd = new Date(sleepStart.getTime() + sleepDuration);
+        const sleepSound = sounds[soundKey]
         chai.request(server).put('/sleepLogs')
             .auth(token, { type: 'bearer' })
             .query({ id: ['234465465', '453564'] })
@@ -882,7 +845,7 @@ describe("PUT -/sleepLogs", () => {
                 sleepEnd,
                 sleepDuration,
                 sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-                sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
+                sleepSound,
 
             }).end((err, res) => {
                 res.should.have.status(405)
@@ -896,6 +859,7 @@ describe("PUT -/sleepLogs", () => {
         const sleepDuration = faker.number.int({ min: 4, max: 15 }) * 3600000;
         const sleepStart = faker.defaultRefDate(30);
         const sleepEnd = new Date(sleepStart.getTime() + sleepDuration);
+        const sleepSound = sounds[soundKey]
         chai.request(server).put('/sleepLogs')
             .auth(token, { type: 'bearer' })
             .query({ id: ['66791cb82c6b5e01b4c1efd5', '66791cb82c6b5e01b4c1efd7'] })
@@ -908,8 +872,7 @@ describe("PUT -/sleepLogs", () => {
                 sleepEnd,
                 sleepDuration,
                 sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-                sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
-
+                sleepSound,
             }).end((err, res) => {
                 res.should.have.status(404)
                 done()
@@ -922,6 +885,7 @@ describe("PUT -/sleepLogs", () => {
         const sleepDuration = faker.number.int({ min: 4, max: 15 }) * 3600000;
         const sleepStart = faker.defaultRefDate(30);
         const sleepEnd = new Date(sleepStart.getTime() + sleepDuration);
+        const sleepSound = sounds[soundKey]
         chai.request(server).put('/sleepLogs').
             auth(token, { type: 'bearer' })
             .query({ id: _.map(sleepLogs, '_id') })
@@ -934,7 +898,7 @@ describe("PUT -/sleepLogs", () => {
                 sleepEnd,
                 sleepDuration,
                 sleepQuality: faker.helpers.arrayElement(['']),
-                sleepSound: faker.helpers.arrayElement(['snore during sleep', 'talk during sleep', 'move during sleep', 'wake up in the night'])
+                sleepSound,
             })
             .end((err, res) => {
                 res.should.have.status(405)
@@ -949,6 +913,7 @@ describe("PUT -/sleepLogs", () => {
         const sleepDuration = faker.number.int({ min: 4, max: 15 }) * 3600000;
         const sleepStart = faker.defaultRefDate(30);
         const sleepEnd = new Date(sleepStart.getTime() + sleepDuration);
+        const sleepSound = sounds[soundKey]
         chai.request(server).put('/sleepLogs')
 
             .query({ id: _.map(sleepLogs, '_id') })
@@ -957,6 +922,8 @@ describe("PUT -/sleepLogs", () => {
                 logDate,
                 note,
                 rating,
+                sleepEnd,
+                sleepSound
 
 
             }).end((err, res) => {

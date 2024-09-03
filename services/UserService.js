@@ -11,25 +11,61 @@ var User = mongoose.model('User', UserSchema)
 
 User.createIndexes()
 
-module.exports.loginUser = async function (username, password, options, callback) {
-    module.exports.findOneUser(['username', 'email'], username, null, async (err, value) => {
-        if (err)
-            callback(err)
-        else {
-            if (bcrypt.compareSync(password, value.password)) {
-                var token = TokenUtils.createToken({ _id: value._id }, null)
-
-                module.exports.updateOneUser(value._id, { token: token }, null, (err, v) => {
-
-                    callback(null, { ...value, token: token })
-                })
+module.exports.loginUser = async function (
+    email,
+    password,
+    options,
+    callback
+) {
+    if (email != "" && password != "") {
+        module.exports.findOneUser(
+            ["email"],
+            email,
+            null,
+            async (err, value) => {
+                if (err) {
+                    callback(err);
+                } else {
+                    if (bcrypt.compareSync(password, value.password)) {
+                        var token = TokenUtils.createToken({ _id: value._id }, null);
+                        User.findByIdAndUpdate(
+                            value._id,
+                            { token: token },
+                            { returnDocument: "after", runValidators: true }
+                        )
+                            .then((value) => {
+                                try {
+                                    if (value) {
+                                        callback(null, value.toObject());
+                                    } else {
+                                        callback({
+                                            msg: "Utilisateur non trouvé.",
+                                            type_error: "no-found",
+                                        });
+                                    }
+                                } catch (e) {
+                                    callback(e);
+                                }
+                            })
+                            .catch((e) => {
+                                console.log(e);
+                            });
+                    } else {
+                        callback({
+                            msg: "La comparaison des mots de passe sont fausses",
+                            type_error: "no_comparaison",
+                        });
+                    }
+                }
             }
-            else {
-                callback({ msg: "La comparaison des mots de passe sont fausses", type_error: "no_comparaison" })
-            }
-        }
-    })
-}
+        );
+    } else {
+        callback({
+            msg: "Nom d'utilisateur ou mot de passe manquant.",
+            type_error: "no-valid",
+        });
+    }
+};
 module.exports.addOneUser = async function (user, options, callback) {
 
     try {
@@ -173,7 +209,7 @@ module.exports.findManyUsers = function (search, limit, page, options, callback)
     if (typeof page !== "number" || typeof limit !== "number" || isNaN(page) || isNaN(limit)) {
         callback({ msg: `format de ${typeof page !== "number" ? "page" : "limit"} est incorrect`, type_error: "no-valid" })
     } else {
-        let query_mongo = search ? { $or: _.map(["personnel", "consentement", "username", "conseil", "email"], (e) => { return { [e]: { $regex: search } } }) } : {}
+        let query_mongo = search ? { $or: _.map(["personnel_consentement", "conseil_statut", "alarme_vibration", "email"], (e) => { return { [e]: { $regex: search } } }) } : {}
         User.countDocuments(query_mongo).then((value) => {
             if (value > 0) {
                 const skip = ((page - 1) * limit)

@@ -23,11 +23,11 @@ var NotificationSchema = mongoose.Schema({
     lu: {
         type: Boolean,
         default: false,
-        required: true
+
     },
     created_at: {
         type: Date,
-        required: true
+        default: Date.now
     }
 
 

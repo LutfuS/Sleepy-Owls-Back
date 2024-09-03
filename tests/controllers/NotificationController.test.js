@@ -18,78 +18,54 @@ var token = ""
 const sleepDuration = faker.number.int({ min: 4, max: 15 }) * 3600000;
 const sleepStart = faker.defaultRefDate(30);
 const sleepEnd = new Date(sleepStart.getTime() + sleepDuration);
+
+const sounds = {
+    'Ronflement': 'public\son\man_breathing_asleep-75120.mp3',
+    'Somniloquie': 'public\son\sleep-talking-wav-68027.mp3',
+    'Chuchotement': 'public\son\shushing-150148.mp3',
+    'Reveil': 'public\son\man-waking-up-from-sleep-6338.mp3',
+    'Respirations': 'public\son\man_breathing_asleep-75120.mp3'
+}
+
+const soundKey = faker.helpers.arrayElement(Object.keys(sounds))
+const sleepSound = sounds[soundKey]
 let users = [
     {
-        username: "johnn",
+
         password: "fggsdqge",
         email: "johnun.us@gmail.com",
-        personnel: {
-            compte: "ze2784459",
-            consentement: true
-        },
-        alarme: {
-            vibration: true
-        },
-        conseil: {
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-            texte: "SUUUUUUUU",
-            statut: true
-        }
+        personnel_consentement: true,
+        alarme_vibration: true,
+        conseil_statut: true
     },
 
     {
-        username: "joercthn",
+
         password: "fggsdqge",
         email: "johnuzctztc.us@gmail.com",
-        personnel: {
-            compte: "zgzecre10",
-            consentement: true
-        },
-        alarme: {
-            vibration: true
-        },
-        conseil: {
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-            texte: "SUUUUUUUU",
-            statut: true
-        }
-
+        personnel_consentement: true,
+        alarme_vibration: true,
+        conseil_statut: true,
     },
+
+
     {
-        username: "jozcgzghn",
+
         password: "fggsdqge",
         email: "johnutgzct.us@gmail.com",
-        personnel: {
-            compte: "zegtcg10",
-            consentement: true
-        },
-        alarme: {
-            vibration: true
-        },
-        conseil: {
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-            texte: "SUUUUUUUU",
-            statut: true
-        }
+        personnel_consentement: true,
+        alarme_vibration: true,
+        conseil_statut: true
 
     },
 
     {
-        username: "jothfed(ghn",
+
         password: "fggsdqge",
         email: "johnu.us@gmail.com",
-        personnel: {
-            compte: "ze1hrt0",
-            consentement: true
-        },
-        alarme: {
-            vibration: true
-        },
-        conseil: {
-            image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-            texte: "SUUUUUUUU",
-            statut: true
-        }
+        personnel_consentement: true,
+        alarme_vibration: true,
+        conseil_statut: true
 
     }
 ]
@@ -114,21 +90,13 @@ function rdm_user(tab) {
 describe("POST -/login", () => {
     it("Authentifier un utilisateur correctement. -S", (done) => {
         chai.request(server).post('/login').send({
-            username: "johnn",
+
             password: "fggsdqge",
             email: "johnun.us@gmail.com",
-            personnel: {
-                compte: "ze2784459",
-                consentement: true
-            },
-            alarme: {
-                vibration: true
-            },
-            conseil: {
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                texte: "SUUUUUUUU",
-                statut: true
-            }
+            personnel_consentement: true,
+            alarme_vibration: true,
+            conseil_statut: true
+
 
         }).end((err, res) => {
             res.should.have.status(200)
@@ -140,21 +108,13 @@ describe("POST -/login", () => {
     })
     it("Authentifier un utilisateur incorrect. -E(avec password incorrect)", (done) => {
         chai.request(server).post('/login').send({
-            username: "johjtntbhn",
+
             password: "fgghregsdqge",
             email: "jovrthchnu.us@gmail.com",
-            personnel: {
-                compte: "ze1g'(ct0",
-                consentement: true
-            },
-            alarme: {
-                vibration: true
-            },
-            conseil: {
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                texte: "SUUUUUUUU",
-                statut: true
-            }
+            personnel_consentement: true,
+            alarme_vibration: true,
+            conseil_statut: true
+
 
         }).end((err, res) => {
             res.should.have.status(401)
@@ -163,21 +123,12 @@ describe("POST -/login", () => {
     })
     it("Authentifier un utilisateur incorrect. -E(avec username incorrect)", (done) => {
         chai.request(server).post('/login').send({
-            username: "johkjfyujrjtntbhn",
+
             password: "fggsdqge",
             email: "jovrthchnu.us@gmail.com",
-            personnel: {
-                compte: "ze1g'(ct0",
-                consentement: true
-            },
-            alarme: {
-                vibration: true
-            },
-            conseil: {
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                texte: "SUUUUUUUU",
-                statut: true
-            }
+            personnel_consentement: true,
+            alarme_vibration: true,
+            conseil_statut: true
 
         }).end((err, res) => {
             res.should.have.status(401)
@@ -192,7 +143,7 @@ let sleepData = [
         sleepEnd,
         sleepDuration,
         sleepQuality: faker.helpers.arrayElement(['Poor', 'Average', 'Good', 'Excellent']),
-        sleepSound: faker.helpers.arrayElement(['snore in sleep', 'talk in sleep', 'move in sleep', 'wake up in the night']),
+        sleepSound,
         user_id: rdm_user(tab_id_users)
     },
 ];

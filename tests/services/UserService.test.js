@@ -14,18 +14,11 @@ describe("addOneUser", () => {
             email: "eduard.dupont@gmail.com",
             username: "edupot",
             password: "fggsdqge",
-            personnel: {
-                compte: "ze1",
-                consentement: true
-            },
-            alarme: {
-                vibration: true
-            },
-            conseil: {
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                texte: "SUUUUUUUU",
-                statut: true
-            }
+            personnel_consentement_consentement: true,
+
+            alarme_vibration: true,
+            conseil_statut: true
+
 
         };
         UserService.addOneUser(user, null, function (err, value) {
@@ -42,18 +35,12 @@ describe("addOneUser", () => {
 
             username: "eduqhqwegqehsg548pot",
             password: "fggsdqge",
-            personnel: {
-                compte: "ze1",
-                consentement: true
-            },
-            alarme: {
-                vibration: true
-            },
-            conseil: {
-                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                texte: "SUUUUUUUU",
-                statut: true
-            }
+            personnel_consentement_consentement: true,
+
+            alarme_vibration: true,
+
+            conseil_statut: true
+
         };
         UserService.addOneUser(user_no_valid, null, function (err, value) {
             expect(err).to.haveOwnProperty("msg");
@@ -77,18 +64,10 @@ describe("addManyUsers", () => {
                 email: "edouard.dupont2@gmail.com",
                 username: "edupont1",
                 password: "fggsdqge",
-                personnel: {
-                    compte: "zee",
-                    consentement: true
-                },
-                alarme: {
-                    vibration: true
-                },
-                conseil: {
-                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                    texte: "SUUUUUUUU",
-                    statut: true
-                }
+                personnel_consentement_consentement: true,
+                alarme_vibration: true,
+                conseil_statut: true
+
             },
             {
 
@@ -96,18 +75,10 @@ describe("addManyUsers", () => {
                 username: "",
                 password: "fggsdqge",
                 testing: true,
-                personnel: {
-                    compte: "zee2",
-                    consentement: true
-                },
-                alarme: {
-                    vibration: true
-                },
-                conseil: {
-                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                    texte: "SUUUUUUUU",
-                    statut: true
-                }
+                personnel_consentement_consentement: true,
+                alarme_vibration: true,
+                conseil_statut: true
+
 
             },
             {
@@ -116,36 +87,20 @@ describe("addManyUsers", () => {
                 username: "edupont3",
                 password: "fggsdqge",
                 testing: true,
-                personnel: {
-                    compte: "zee3",
-                    consentement: true
-                },
-                alarme: {
-                    vibration: true
-                },
-                conseil: {
-                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                    texte: "SUUUUUUUU",
-                    statut: true
-                }
+                personnel_consentement_consentement: true,
+                alarme_vibration: true,
+                conseil_statut: true
+
 
             },
             {
 
                 email: "edouard.dupont4@gmail.com",
                 password: "fggsdqge",
-                personnel: {
-                    compte: "zee4",
-                    consentement: true
-                },
-                alarme: {
-                    vibration: true
-                },
-                conseil: {
-                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                    texte: "SUUUUUUUU",
-                    statut: true
-                }
+                personnel_consentement_consentement: true,
+                alarme_vibration: true,
+                conseil_statut: true
+
             },
         ];
 
@@ -159,59 +114,30 @@ describe("addManyUsers", () => {
             {
 
                 email: "edouard.dupont7@gmail.com",
-                username: "edupont7",
                 password: "fggsdqge",
-                personnel: {
-                    compte: "ze2",
-                    consentement: true
-                },
-                alarme: {
-                    vibration: true
-                },
-                conseil: {
-                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                    texte: "SUUUUUUUU",
-                    statut: true
-                }
+                personnel_consentement: true,
+                alarme_vibration: true,
+                conseil_statut: true
+
             },
             {
 
                 email: "edouard.dupont8@gmail.com",
-                username: "La8",
                 password: "fggsdqge",
                 testing: true,
-                personnel: {
-                    compte: "ze3",
-                    consentement: true
-                },
-                alarme: {
-                    vibration: true
-                },
-                conseil: {
-                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                    texte: "SUUUUUUUU",
-                    statut: true
-                }
+                personnel_consentement: true,
+                alarme_vibration: true,
+                conseil_statut: true,
 
             },
             {
 
                 email: "edouard.dupont9@gmail.com",
-                username: "edupont10",
                 password: "fggsdqge",
                 testing: true,
-                personnel: {
-                    compte: "ze4",
-                    consentement: true
-                },
-                alarme: {
-                    vibration: true
-                },
-                conseil: {
-                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                    texte: "SUUUUUUUU",
-                    statut: true
-                }
+                personnel_consentement: true,
+                alarme_vibration: true,
+                conseil_statut: true
 
             },
         ];
@@ -226,7 +152,7 @@ describe("addManyUsers", () => {
 });
 describe("findOneUser", () => {
     it("Chercher un utilisateur par les champs selectionnées -S.", (done) => {
-        UserService.findOneUser(["email", "username"], users[0].username, null, function (err, value) {
+        UserService.findOneUser(["email"], users[0].email, null, function (err, value) {
             expect(value).to.haveOwnProperty('password')
             done()
         })
@@ -287,28 +213,17 @@ describe("updateOneUser", () => {
             id_user_valid,
             {
                 email: "edouard.dupont114@gmail.com",
-                username: "edupont114",
                 password: "eqfdf",
-                personnel: {
-                    compte: "ze2789",
-                    consentement: true
-                },
-                alarme: {
-                    vibration: false
-                },
-                conseil: {
-                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                    texte: "SUUUUUUUU",
-                    statut: true
-                }
+                personnel_consentement: true,
+                alarme_vibration: false,
+                conseil_statut: true
+
             },
             null, function (err, value) {
                 expect(value).to.be.a("object");
                 expect(value).to.haveOwnProperty("_id");
                 expect(value).to.haveOwnProperty("email");
-                expect(value).to.haveOwnProperty("username");
-                expect(value["email"]).to.be.equal("edouard.dupont114@gmail.com");
-                expect(value["username"]).to.be.equal("edupont114");
+                expect(value["email"]).to.be.equal("edouard.dupont114@gmail.com")
                 done();
             }
         );
@@ -319,7 +234,7 @@ describe("updateOneUser", () => {
             "1200",
             {
                 email: "edouard.dupont7@gmail.com",
-                username: "edupont7"
+
             },
             null, function (err, value) {
                 expect(err).to.be.a("object");
@@ -335,7 +250,7 @@ describe("updateOneUser", () => {
             id_user_valid,
             {
                 email: "",
-                username: "edupont7"
+
             },
             null, function (err, value) {
                 expect(value).to.be.undefined;
@@ -355,35 +270,12 @@ describe("updateOneUser", () => {
 describe("updateManyUsers", () => {
     it("Modifier plusieurs utilisateurs correctement. - S", (done) => {
         UserService.updateManyUsers(
-            tab_id_users,
-            {
-                email: "edouard.dupont114@gmail.com",
-                username: "edupont114",
-                password: "eqfdf",
-                personnel: {
-                    compte: "ze2789",
-                    consentement: true
-                },
-                alarme: {
-                    vibration: true
-                },
-                conseil: {
-                    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/She-goat_J1.jpg/240px-She-goat_J1.jpg",
-                    texte: "SUUUUUUUU",
-                    statut: true
-                }
-            },
-
-
-
-            null, function (err, value) {
-                // console.log("dsqlfzjlfjzeli")
-                // console.log(err, value)
-                // console.log("AHHHHH")
-                // expect(value).to.haveOwnProperty("modifiedCount");
-                // expect(value).to.haveOwnProperty("matchedCount");
-                // expect(value["matchedCount"]).to.be.equal(tab_id_users.length);
-                // expect(value["modifiedCount"]).to.be.equal(tab_id_users.length);
+            tab_id_users, { password: "fggsdqge" }, null, function (err, value) {
+                expect(value).to.haveOwnProperty("modifiedCount");
+                expect(value).to.haveOwnProperty("matchedCount");
+                expect(value["matchedCount"]).to.be.equal(tab_id_users.length);
+                expect(value["modifiedCount"]).to.be.equal(tab_id_users.length);
+                // console.log(value, err)
                 done();
             }
         )
@@ -394,7 +286,6 @@ describe("updateManyUsers", () => {
             "1200",
             {
                 email: "edouardreqhbsesr.dupont7@gmail.com",
-                username: "ederbqdgbesdrgerguqthbserpont7",
                 password: "eqqgeqgfdf"
             },
             null, function (err, value) {
@@ -411,7 +302,6 @@ describe("updateManyUsers", () => {
             tab_id_users,
             {
                 email: "",
-                username: "eduqherhershpont7",
                 password: "eqfwgrdf"
             },
             null, function (err, value) {
@@ -435,7 +325,7 @@ describe("deleteOneUser", () => {
             expect(value).to.be.a("object");
             expect(value).to.haveOwnProperty("_id");
             expect(value).to.haveOwnProperty("email");
-            expect(value).to.haveOwnProperty("username");
+
             done();
         });
     });
