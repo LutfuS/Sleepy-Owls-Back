@@ -1,14 +1,17 @@
-# Utiliser une image Node.js officielle
-FROM node:20.15.0
-# Créer un répertoire de travail
+FROM node:20.15.0-alpine AS dependencies
+USER node
 WORKDIR /app
-# Copier les fichiers package.json et package-lock.json
-COPY package*.json ./
-# Installer les dépendances
-RUN npm install
-# Copier le reste de l’application
-COPY . .
-# Exposer le port de l’application
-EXPOSE 3000
-# Démarrer l’application
-CMD ["node", "server.js"]
+COPY --chown=node:node package*.json ./
+RUN npm ci
+
+FROM dependencies AS development
+COPY --chown=node:node ./ ./
+COPY --chown=node:node scripts/install-docker.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/install-docker.sh
+EXPOSE 3001
+ENTRYPOINT ["install-docker.sh"]
+CMD ["npm", "start"]
+
+FROM dependencies AS test
+COPY --chown=node:node ./ ./
+CMD ["npm", "run", "test"]

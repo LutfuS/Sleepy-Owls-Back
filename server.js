@@ -39,6 +39,9 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
+//Sert les fichiers statiques depuis le dossier public
+app.use(express.static('public'));
+
 // Déclaration des controller pour utilisateurs
 const UserController = require("./controllers/UserController");
 

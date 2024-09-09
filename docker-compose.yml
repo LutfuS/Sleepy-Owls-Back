@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  api-sleepyowls:
+    platform: ${DOCKER_PLATFORM}
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: api-sleepyowls
+    volumes:
+      - .:/app
+    environment:
+      - PORT=${PORT}
+      - SECRET_KEY=${SECRET_KEY}
+      - SECRET_COOKIE=${SECRET_COOKIE}
+      - CHOKIDAR_USEPOLLING=true
+    ports:
+      - ${PORT}:${PORT}
+    networks:
+      - sleepyowls-network
+    depends_on:
+      - mongodb-sleepyowls
+    restart: always
+
+  mongodb-sleepyowls:
+    image: mongo:latest
+    container_name: mongodb-sleepyowls
+    volumes:
+      - ./mongo-data:/data/db
+    networks:
+      - sleepyowls-network
+    ports:
+      - ${PORT_BDD}:${PORT_BDD}
+    expose:
+      - ${PORT_BDD}
+
+networks:
+  sleepyowls-network:
+    driver: bridge
+
+volumes:
+  mongo-data:

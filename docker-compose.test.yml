@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  api-test-sleepyowls:
+    platform: ${DOCKER_PLATFORM}
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: test
+    container_name: api-test-sleepyowls
+    environment:
+      - PORT=${PORT}
+      - SECRET_KEY=${SECRET_KEY}
+      - SECRET_COOKIE=${SECRET_COOKIE}
+    networks:
+      - sleepyowls-network-test
+    depends_on:
+      - mongodb-sleepyowls-test
+
+  mongodb-sleepyowls-test:
+    image: mongo:latest
+    container_name: mongodb-sleepyowls-test
+    volumes:
+      - ./mongo-data-test:/data/db
+    networks:
+      - sleepyowls-network-test
+    ports:
+      - ${PORT_BDD}:${PORT_BDD}
+    expose:
+      - ${PORT_BDD}
+
+networks:
+  sleepyowls-network-test:
+    driver: bridge
